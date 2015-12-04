@@ -11,6 +11,7 @@
 [bower-url]:http://badge.fury.io/bo/image-clipper
 [bower-image]: https://badge.fury.io/bo/image-clipper.svg
 
+[API Documentation](#api)
 
 ## Why image-clipper?
 
@@ -20,7 +21,7 @@ However, i just need to use a very small part of `gm` functions provided, and do
 
 ## When should you use image-clipper?
 
-Your app running in the browser & Electron & NW.js, and you just want to do some simple image operations, `image-clipper` may be what you want!
+Your application running in the browser & Electron & NW.js, and you just want to do some simple image operations, `image-clipper` may be what you want!
 
 `image-clipper` can make you avoid using the kind of large modules that depends client to install additional local dependencies.
 
@@ -92,6 +93,10 @@ sourceImage.onload(function(){
     });
 });
 ```
+
+# API
+
+> To be continued...
 
 # Example
 

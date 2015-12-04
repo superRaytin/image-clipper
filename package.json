@@ -21,7 +21,7 @@
   "author": "Leon Shi",
   "scripts": {
     "test": "./node_modules/.bin/mocha ./test/*.js",
-    "jasmine-test": "./node_modules/http-server/bin/http-server ./ -p 9100"
+    "server": "./node_modules/http-server/bin/http-server ./ -p 9100"
   },
   "devDependencies": {
     "should": "~6.0.1",

@@ -1,0 +1,34 @@
+{
+  "name": "image-clipper",
+  "version": "0.1.0",
+  "description": "Clip & Crop images purely using Canvas for Electron, NW.js(Node-webkit) and the Browser, without any image processing library dependencies.",
+  "main": "index.js",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/superRaytin/image-clipper/issues"
+  },
+  "homepage": "https://github.com/superRaytin/image-clipper",
+  "repository": "https://github.com/superRaytin/image-clipper",
+  "keywords": [
+    "image",
+    "graphic",
+    "clipper",
+    "crop",
+    "canvas",
+    "image clipper",
+    "image process"
+  ],
+  "author": "Leon Shi",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha ./test/*.js",
+    "jasmine-test": "./node_modules/http-server/bin/http-server ./ -p 9100"
+  },
+  "devDependencies": {
+    "should": "~6.0.1",
+    "mocha": "~2.2.4",
+    "http-server": "~0.8.5",
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.4",
+    "grunt-browserify": "~4.0.1"
+  }
+}

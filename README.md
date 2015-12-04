@@ -1,5 +1,5 @@
 # image-clipper
-> Clip & Crop images purely using Canvas for Electron, NW.js(Node-webkit) and the Browser, without any image processing library dependencies. Still on development.
+> Clip & Crop images purely using Canvas for [Electron](https://github.com/atom/electron/), [NW.js](https://github.com/nwjs/nw.js) (Node-webkit) and the Browser, without any image processing library dependencies. Still on development.
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Bower version][bower-image]][bower-url]
 
@@ -14,7 +14,7 @@
 
 # Why image-clipper
 
-When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm]() and [node-canvas](), when you publish your app, probably the first thing you have to do is prompts your users to install multiple local dependencies, For example, `gm` relies [graphicMagick](), `node-canvas` relies [carlo]().
+When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your app, probably the first thing you have to do is prompts your users to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
 
 However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, such as clip & crop, we should avoid users to install those cumbersome things, that may frustrated user, there is no need to install those!
 

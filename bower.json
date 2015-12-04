@@ -1,0 +1,16 @@
+{
+    "name": "image-clipper",
+    "version": "0.1.0",
+    "main": "dist/imageClipper.js",
+    "ignore": [
+        "**/.*",
+        "test",
+        "lib",
+        "example",
+        "LICENSE",
+        "bower.json",
+        "package.json",
+        "README*.md",
+        "Gruntfile.js"
+    ]
+}

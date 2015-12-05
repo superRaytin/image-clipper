@@ -1,5 +1,5 @@
 # image-clipper
-> Crop your images purely using the native Canvas APIs, for the Browser or [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) (Node-webkit), without any image processing library dependencies. Still on development.
+> Crop your images purely using the native Canvas APIs, for the Browser & [Electron](https://github.com/atom/electron/) & [NW.js](https://github.com/nwjs/nw.js) (Node-webkit), without any image processing library dependencies.
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Bower version][bower-image]][bower-url]
 
@@ -207,7 +207,7 @@ clipper.loadImageFromUrl('example.jpg', function() {
 
 ### clipper.getCanvas()
 
-Return current Canvas Object.
+Return current Canvas object.
 
 ```js
 var canvas = clipper.getCanvas();

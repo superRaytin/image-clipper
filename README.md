@@ -19,11 +19,11 @@
 
 When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is to prompt your user to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
 
-However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, and we want to avoid our users to install those cumbersome things that may frustrated them, at this moment there is no need to install those!
+However, i just need to use a very small part of `gm` provided, and do some simple image operations, and we want to avoid users to install those cumbersome things that may frustrated them, at this moment there is no need to install those!
 
 ## When should you use image-clipper?
 
-Your application will running in the browser or Electron or NW.js, and you just want to do some simple image operations, then `image-clipper` may be what you want!
+Your application will running in the Browser or Electron or NW.js, and you just want to do some simple image operations, then `image-clipper` may be what you want!
 
 `image-clipper` can make you avoid using the kind of large modules that depends client to install additional local dependencies. It use the native canvas APIs to crop your images.
 

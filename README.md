@@ -88,9 +88,7 @@ See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 # API
 
-> The API is not yet finalized.
-
-initialize an ImageClipper instance to demonstrate:
+First initialize an ImageClipper instance to demonstrate:
 
 ```js
 var ImageClipper = require('image-clipper');

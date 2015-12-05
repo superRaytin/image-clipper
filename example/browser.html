@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>imageClipper example</title>
+    <title>image-clipper example</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
         .hide {
@@ -23,14 +23,11 @@
     </style>
 </head>
 <body>
-<h1>imageClipper example</h1>
+<h1>image-clipper example</h1>
 <div id="container">
     <div class="col">
         <h3>
-            Origin:
-            <span>
-                <input id="quality" class="quality" type="text" placeholder="Enter quality: 1~100">
-            </span>
+            <h3>Origin:</h3>
             <img src="house.jpg" id="source">
         </h3>
     </div>
@@ -39,7 +36,7 @@
         <pre>
 var clipper = new ImageClipper();
 clipper.loadImageFromUrl('house.jpg', function() {
-    this.crop(20, 20, 100, 100, function(dataUrl) {
+    this.quality(0.1).crop(20, 20, 100, 100, function(dataUrl) {
         previewImage.src = dataUrl;
     });
 });
@@ -61,7 +58,7 @@ clipper.loadImageFromUrl('house.jpg', function() {
 
     var clipper = new ImageClipper();
     clipper.loadImageFromUrl('house.jpg', function() {
-        this.crop(x, y, width, height, function(dataUrl) {
+        this.quality(0.1).crop(x, y, width, height, function(dataUrl) {
             previewImage.src = dataUrl;
         });
     });

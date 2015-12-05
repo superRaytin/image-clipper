@@ -1,8 +1,8 @@
 {
   "name": "image-clipper",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Crop your images purely using the native Canvas APIs, for the Browser & Electron & NW.js (Node-webkit), without any image processing library dependencies.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/superRaytin/image-clipper/issues"

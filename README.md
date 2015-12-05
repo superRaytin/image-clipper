@@ -1,5 +1,5 @@
 # image-clipper
-> Clip & Crop images purely using Canvas for [Electron](https://github.com/atom/electron/), [NW.js](https://github.com/nwjs/nw.js) (Node-webkit) and the Browser, without any image processing library dependencies. Still on development.
+>> Crop your images purely using the native Canvas APIs, for [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) (Node-webkit) or the Browser, without any image processing library dependencies. Still on development.
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Bower version][bower-image]][bower-url]
 
@@ -11,32 +11,32 @@
 [bower-url]:http://badge.fury.io/bo/image-clipper
 [bower-image]: https://badge.fury.io/bo/image-clipper.svg
 
+[Quick Start](#quickstart)
+
 [API Documentation](#api)
 
 ## Why image-clipper?
 
 When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is prompts your user to install multiple local dependencies, For example, `gm` depends [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` depends [Cairo](http://cairographics.org/).
 
-However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, such as clip & crop, we should avoid users to install those cumbersome things, that may frustrated your user, sometimes there is no need to install those!
+However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, such as crop, we should avoid users to install those cumbersome things that may frustrated your user, sometimes there is no need to install those!
 
 ## When should you use image-clipper?
 
-Your application will running in the browser & Electron & NW.js, and you just want to do some simple image operations, then `image-clipper` may be what you want!
+Your application will running in the browser or Electron or NW.js, and you just want to do some simple image operations, then `image-clipper` may be what you want!
 
-`image-clipper` can make you avoid using the kind of large modules that depends client to install additional local dependencies.
+`image-clipper` can make you avoid using the kind of large modules that depends client to install additional local dependencies. It use the native canvas APIs to crop your images.
 
 **Note: If your project is a purely Node.js project, please use the dedicated image processing library that provide more comprehensive functions, such as `gm` and `node-canvas`, because you can install anything on the server.**
 
 
-# Install
+# Installation / Download
 
-```
-$ npm install image-clipper
-```
+`npm install image-clipper` or `bower install image-clipper` or just download [imageClipper.js](dist/imageClipper.js) from the git repo.
 
-# Usage
+# Quick Start
 
-### Electron & NW.js
+### Electron & NW.js (Node-webkit)
 
 ```js
 var path = require('path');
@@ -58,13 +58,12 @@ clipper.loadImageFromUrl('example.jpg', function() {
 });
 ```
 
-### Browser
+### Browser Example
 
 HTML:
 
 ```html
-<img src="example.jpg" id="source">
-<img src="" alt="preview result" id="preview">
+<img src="" alt="preview" id="preview">
 <script src="./dist/imageClipper.js"></script>
 ```
 
@@ -81,34 +80,106 @@ clipper.loadImageFromUrl('example.jpg', function() {
 });
 ```
 
-or load image from memory:
+Or you can preview the demo using `npm run server` and open http://localhost:9100/example/browser.html
 
-```js
-var sourceImage = document.getElementById('source');
-var previewImage = document.getElementById('preview');
+# Supported Browsers or environments
 
-sourceImage.onload(function(){
-    clipper.loadImageFromMemory(sourceImage).crop(x, y, width, height, function(dataUrl) {
-        previewImage.src = dataUrl;
-    });
-});
-```
+See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 # API
 
-> To be continued...
+> The API is not yet finalized.
 
-# Example
+First, initialize an ImageClipper instance
 
+```js
+var ImageClipper = require('image-clipper');
+var clipper = new ImageClipper();
 ```
-npm run server
+
+### clipper.loadImageFromUrl(url, callback)
+
+Load image from url.
+
+- **url:** url of the source image
+- **callback:** called when source image loaded.
+
+> Note: in all callbacks, allow using `this` to call instance methods
+
+### clipper.crop(x, y, width, height, callback)
+
+Crop rectangular area of canvas and pass data url to callback when done.
+
+- **x:** the x axis of the coordinate for the rectangle starting point
+- **y:** the y axis of the coordinate for the rectangle starting point
+- **width:** the rectangle's width
+- **height:** the rectangle's height
+- **callback:** function(dataUrl)
+
+### clipper.loadImageFromMemory(image)
+
+`clipper.loadImageFromUrl` will eventually using this method to crop image.
+
+- **image:** anything ctx.drawImage() accepts, usually HTMLImageElement, HTMLCanvasElement or HTMLVideoElement. Keep in mind that [origin policies](https://en.wikipedia.org/wiki/Same-origin_policy) apply to the image source, and you may not use cross-domain images without [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+
+Here is an example:
+
+```js
+clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
+	console.log('cropped!');
+});
 ```
 
-http://localhost:9100/example/browser.html
+In this case, the best practice is place the code in `onload` callback:
 
-# Test case
+```js
+image.onload(function(){ //... });
+```
 
-http://localhost:9100/test/jasmine/runner.html
+### clipper.quality(level)
+
+- **level:** a Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp.
+
+Here is an example:
+
+```js
+clipper.loadImageFromMemory(image).quality(0.68).crop(x, y, width, height, function(dataUrl) {
+	console.log('cropped!');
+});
+```
+
+### clipper.toFile(path, dataUrl, callback)
+
+Convert data url to binary image file.
+
+> Note: in Browsers, this will return the original data url.
+
+- **path:** path of output file
+- **dataUrl:** data url that crop() returned
+- **callback:** function()
+
+Here is an example:
+
+```js
+clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
+	this.toFile(outputFileName, dataUrl, function() {
+		console.log('saved');
+	});
+});
+```
+
+### clipper.clearArea()
+
+### clipper.toDataUrl()
+
+### clipper.getCanvas()
+
+### clipper.reset()
+
+
+# Tests
+
+You can run the tests using `npm run server` and open http://localhost:9100/test/jasmine/runner.html
 
 # License
 

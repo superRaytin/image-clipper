@@ -1,5 +1,5 @@
 # image-clipper
->> Crop your images purely using the native Canvas APIs, for [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) (Node-webkit) or the Browser, without any image processing library dependencies. Still on development.
+> Crop your images purely using the native Canvas APIs, for [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) (Node-webkit) or the Browser, without any image processing library dependencies. Still on development.
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Bower version][bower-image]][bower-url]
 
@@ -10,10 +10,6 @@
 [npm-image]: http://img.shields.io/npm/v/image-clipper.svg
 [bower-url]:http://badge.fury.io/bo/image-clipper
 [bower-image]: https://badge.fury.io/bo/image-clipper.svg
-
-[Quick Start](#quickstart)
-
-[API Documentation](#api)
 
 ## Why image-clipper?
 
@@ -71,18 +67,18 @@ JS:
 
 ```js
 var clipper = new ImageClipper();
-var previewImage = document.getElementById('preview');
+var preview = document.getElementById('preview');
 
 clipper.loadImageFromUrl('example.jpg', function() {
     this.crop(x, y, width, height, function(dataUrl) {
-        previewImage.src = dataUrl;
+        preview.src = dataUrl;
     });
 });
 ```
 
 Or you can preview the demo using `npm run server` and open http://localhost:9100/example/browser.html
 
-# Supported Browsers or environments
+# Supported Browsers
 
 See [caniuse.com/canvas](http://caniuse.com/canvas)
 
@@ -120,7 +116,7 @@ Crop rectangular area of canvas and pass data url to callback when done.
 
 `clipper.loadImageFromUrl` will eventually using this method to crop image.
 
-- **image:** anything ctx.drawImage() accepts, usually HTMLImageElement, HTMLCanvasElement or HTMLVideoElement. Keep in mind that [origin policies](https://en.wikipedia.org/wiki/Same-origin_policy) apply to the image source, and you may not use cross-domain images without [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+- **image:** anything ctx.drawImage() accepts, usually HTMLImageElement, HTMLCanvasElement, HTMLVideoElement or [ImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap). Keep in mind that [origin policies](https://en.wikipedia.org/wiki/Same-origin_policy) apply to the image source, and you may not use cross-domain images without [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 Here is an example:
 

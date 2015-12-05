@@ -17,7 +17,7 @@
 
 ## Why image-clipper?
 
-When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is to prompts your user to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
+When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is to prompt your user to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
 
 However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, such as crop, we should avoid users to install those cumbersome things that may frustrated your user, sometimes there is no need to install those!
 
@@ -52,18 +52,18 @@ var outputFileName = path.join(exportPath, 'example-clipped.jpg');
 clipper.loadImageFromUrl('example.jpg', function() {
     this.crop(x, y, width, height, function(dataUrl) {
         this.toFile(outputFileName, dataUrl, function() {
-            console.log('saved');
+            console.log('saved!');
         });
     });
 });
 ```
 
-### Browser Example
+### Browser
 
 HTML:
 
 ```html
-<img src="" alt="preview" id="preview">
+<img src="" id="preview" alt="imageClipper preview">
 <script src="./dist/imageClipper.js"></script>
 ```
 
@@ -75,6 +75,7 @@ var preview = document.getElementById('preview');
 
 clipper.loadImageFromUrl('example.jpg', function() {
     this.crop(x, y, width, height, function(dataUrl) {
+        console.log('cropped!');
         preview.src = dataUrl;
     });
 });
@@ -82,13 +83,11 @@ clipper.loadImageFromUrl('example.jpg', function() {
 
 Or you can preview the demo using `npm run server` and open http://localhost:9100/example/browser.html
 
-# Supported Browsers
+# Supported browsers
 
 See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 # API
-
-First initialize an ImageClipper instance to demonstrate:
 
 ```js
 var ImageClipper = require('image-clipper');
@@ -161,7 +160,7 @@ Here is an example:
 ```js
 clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
     this.toFile(outputFileName, dataUrl, function() {
-        console.log('saved');
+        console.log('saved!');
     });
 });
 ```

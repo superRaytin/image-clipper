@@ -17,7 +17,7 @@
 
 ## Why image-clipper?
 
-When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is prompts your user to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
+When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is to prompts your user to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
 
 However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, such as crop, we should avoid users to install those cumbersome things that may frustrated your user, sometimes there is no need to install those!
 
@@ -52,7 +52,7 @@ var outputFileName = path.join(exportPath, 'example-clipped.jpg');
 clipper.loadImageFromUrl('example.jpg', function() {
     this.crop(x, y, width, height, function(dataUrl) {
         this.toFile(outputFileName, dataUrl, function() {
-            console.log('the file has been saved');
+            console.log('saved');
         });
     });
 });
@@ -124,7 +124,7 @@ Here is an example:
 
 ```js
 clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
-	console.log('cropped!');
+    console.log('cropped!');
 });
 ```
 
@@ -142,7 +142,7 @@ Here is an example:
 
 ```js
 clipper.loadImageFromMemory(image).quality(0.68).crop(x, y, width, height, function(dataUrl) {
-	console.log('cropped!');
+    console.log('cropped!');
 });
 ```
 
@@ -160,9 +160,9 @@ Here is an example:
 
 ```js
 clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
-	this.toFile(outputFileName, dataUrl, function() {
-		console.log('saved');
-	});
+    this.toFile(outputFileName, dataUrl, function() {
+        console.log('saved');
+    });
 });
 ```
 
@@ -182,23 +182,24 @@ clipper.loadImageFromUrl('example.jpg', function() {
 
 ### clipper.toDataUrl(quality)
 
-- **quality:** quality level.
-
 Return data url of current canvas.
+
+- **quality:** quality level, a Number between 0 and 1.
 
 ### clipper.reset()
 
-Used to restore the canvas, useful after `clearArea()`.
+Used to restore the canvas, useful after `clearArea()` called.
 
 Here is an example:
 
 ```js
 clipper.loadImageFromUrl('example.jpg', function() {
     clipper.clearArea(50, 50, 100, 100).crop(0, 0, 300, 300, function(dataUrl) {
-    	console.log('cropped, part of data has been cleared');
+        console.log('cropped, part of data has been cleared');
+
         clipper.reset().crop(50, 50, 100, 100, function(dataUrl2) {
-			console.log('regained the cleared data:', dataUrl2);
-		});
+            console.log('regained the cleared data:', dataUrl2);
+        });
     });
 });
 ```

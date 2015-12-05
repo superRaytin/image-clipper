@@ -90,7 +90,7 @@ See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 > The API is not yet finalized.
 
-First, initialize an ImageClipper instance
+initialize an ImageClipper instance to demonstrate:
 
 ```js
 var ImageClipper = require('image-clipper');
@@ -168,18 +168,62 @@ clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
 });
 ```
 
-### clipper.clearArea()
+### clipper.clearArea(x, y, width, height)
 
-### clipper.toDataUrl()
+Used to clear rectangular area of canvas. The parameters description see `crop` above.
 
-### clipper.getCanvas()
+Here is an example:
+
+```js
+clipper.loadImageFromUrl('example.jpg', function() {
+    this.clearArea(50, 50, 100, 100).crop(0, 0, 300, 300, function(dataUrl) {
+        preview.src = dataUrl;
+    });
+});
+```
+
+### clipper.toDataUrl(quality)
+
+- **quality:** quality level.
+
+Return data url of current canvas.
 
 ### clipper.reset()
 
+Used to restore the canvas, useful after `clearArea()`.
+
+Here is an example:
+
+```js
+clipper.loadImageFromUrl('example.jpg', function() {
+    clipper.clearArea(50, 50, 100, 100).crop(0, 0, 300, 300, function(dataUrl) {
+    	console.log('cropped, part of data has been cleared');
+        clipper.reset().crop(50, 50, 100, 100, function(dataUrl2) {
+			console.log('regained the cleared data:', dataUrl2);
+		});
+    });
+});
+```
+
+### clipper.getCanvas()
+
+Return current Canvas Object.
+
+```js
+var canvas = clipper.getCanvas();
+// canvas.width
+// canvas.height
+```
 
 # Tests
 
-You can run the tests using `npm run server` and open http://localhost:9100/test/jasmine/runner.html
+First install jasmine:
+
+```
+cd test/jasmine && bower install jasmine
+```
+
+Then you can run the tests using `npm run server` and open http://localhost:9100/test/jasmine/runner.html
 
 # License
 

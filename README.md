@@ -1,5 +1,5 @@
 # image-clipper
-> Crop your images purely using the native Canvas APIs, for [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) (Node-webkit) or the Browser, without any image processing library dependencies. Still on development.
+> Crop your images purely using the native Canvas APIs, for the Browser or [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) (Node-webkit), without any image processing library dependencies. Still on development.
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Bower version][bower-image]][bower-url]
 
@@ -11,9 +11,13 @@
 [bower-url]:http://badge.fury.io/bo/image-clipper
 [bower-image]: https://badge.fury.io/bo/image-clipper.svg
 
+[Quick Start](#quick-start)
+
+[API Documentation](#api)
+
 ## Why image-clipper?
 
-When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is prompts your user to install multiple local dependencies, For example, `gm` depends [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` depends [Cairo](http://cairographics.org/).
+When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient when using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [node-canvas](https://github.com/Automattic/node-canvas), when you publish your application, probably the first thing you have to do is prompts your user to install multiple local dependencies, For example, `gm` relies [GraphicsMagick](http://www.graphicsmagick.org/), `node-canvas` relies [Cairo](http://cairographics.org/).
 
 However, i just need to use a very small part of `gm` functions provided, and do some simple image operations, such as crop, we should avoid users to install those cumbersome things that may frustrated your user, sometimes there is no need to install those!
 
@@ -126,7 +130,7 @@ clipper.loadImageFromMemory(image).crop(x, y, width, height, function(dataUrl) {
 });
 ```
 
-In this case, the best practice is place the code in `onload` callback:
+In this case, the best practice is to place the code in `onload` callback:
 
 ```js
 image.onload(function(){ //... });
@@ -134,7 +138,7 @@ image.onload(function(){ //... });
 
 ### clipper.quality(level)
 
-- **level:** a Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp.
+- **level:** a Number between 0 and 1 indicating image quality if the requested type is `image/jpeg` or `image/webp`.
 
 Here is an example:
 
@@ -148,7 +152,7 @@ clipper.loadImageFromMemory(image).quality(0.68).crop(x, y, width, height, funct
 
 Convert data url to binary image file.
 
-> Note: in Browsers, this will return the original data url.
+> Note: just for Electron & NW.js, otherwise return the original data url.
 
 - **path:** path of output file
 - **dataUrl:** data url that crop() returned

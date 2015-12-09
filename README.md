@@ -150,30 +150,30 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 Return a string containing the data URI of current resultant canvas.
 
-- **quality:** quality level, a Number between 1 and 100.
+- **quality:** a Number between 1 and 100 indicating image quality.
 - **callback:** function(dataUrl), a function to be executed when converting is complete, callback will be passed the result data URI.
 
 Using on the server-side Node.js:
 
 ```js
-clipper.toDataURL(function() {...})
-clipper.toDataURL(quality, function() {...})
+clipper.toDataURL(function(dataUrl) {...});
+clipper.toDataURL(quality, function(dataUrl) {...});
 ```
 
 in the Browser & Electron & NW.js, in addition to the above usages, below usages also be supported since converting is synchronized:
 
 ```js
-clipper.toDataURL()
-clipper.toDataURL(quality)
+var dataUrl = clipper.toDataURL();
+var dataUrl = clipper.toDataURL(quality);
 ```
 
 If your application will run on both sides, the recommendation is using the "callback" way.
 
-### clipper.quality(level)
+### clipper.quality(quality)
 
 Adjusts the jpeg and webp compression level. Level ranges from 0 to 100. Only supported if the requested type is `image/jpeg` or `image/webp`.
 
-- **level:** a Number between 1 and 100 indicating image quality.
+- **quality:** a Number between 1 and 100 indicating image quality.
 
 Below is an example:
 

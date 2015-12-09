@@ -1,7 +1,7 @@
 {
   "name": "image-clipper",
-  "version": "0.2.3",
-  "description": "Crop your images purely using the native Canvas APIs, for the Browser & Electron & NW.js (Node-webkit), without any image processing library dependencies.",
+  "version": "0.3.0",
+  "description": "Node.js module for clip & crop JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & Electron & NW.js (Node-webkit), itself doesn't relies on any image processing libraries.",
   "main": "lib/index.js",
   "license": "MIT",
   "bugs": {
@@ -22,12 +22,13 @@
   "author": "Leon Shi",
   "scripts": {
     "test": "./node_modules/.bin/mocha ./test/*.js",
-    "server": "./node_modules/http-server/bin/http-server ./ -p 9100"
+    "start": "./node_modules/http-server/bin/http-server ./ -p 9100"
   },
   "devDependencies": {
     "should": "~6.0.1",
     "mocha": "~2.2.4",
     "http-server": "~0.8.5",
+    "canvas": "~1.3.5",
     "grunt": "~0.4.5",
     "grunt-contrib-uglify": "~0.4",
     "grunt-browserify": "~4.0.1"

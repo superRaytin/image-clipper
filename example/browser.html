@@ -36,12 +36,12 @@
         <pre>
 var clipper = new ImageClipper();
 clipper.loadImageFromUrl('house.jpg', function() {
-    this.quality(0.1).crop(20, 20, 100, 100, function(dataUrl) {
+    this.quality(10).crop(20, 20, 100, 100).toDataURL(function(dataUrl) {
         previewImage.src = dataUrl;
     });
 });
         </pre>
-        <h3>Preview (quality:<span id="level">0.1</span>)</h3>
+        <h3>Preview (quality:<span id="level">10</span>)</h3>
         <img src="" alt="imageClipper preview" id="preview">
     </div>
 </div>
@@ -58,7 +58,7 @@ clipper.loadImageFromUrl('house.jpg', function() {
 
     var clipper = new ImageClipper();
     clipper.loadImageFromUrl('house.jpg', function() {
-        this.quality(0.1).crop(x, y, width, height, function(dataUrl) {
+        this.quality(10).crop(x, y, width, height).toDataURL(function(dataUrl) {
             previewImage.src = dataUrl;
         });
     });

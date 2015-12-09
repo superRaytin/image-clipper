@@ -50,7 +50,7 @@ However, sometimes we just need to use a very small part of `gm` provided, and d
 
 Electron & NW.js provide a mixture of Node.js and Browser, image-clipper just right using the Browser's native ability of Canvas and the Node's ability of File I/O, no longer needed the Canvas implementation libraries. Moreover, image-clipper use native Canvas APIs to process images, so there is no need to install any other image processing libraries too.
 
-Your desktop application will remain more stable and lightweight and your user will be peach of mind.
+Your desktop application will remain more stable and lightweight and your user will be peace of mind.
 
 ## Basic usage in the truly Browser
 

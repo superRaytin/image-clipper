@@ -83,11 +83,6 @@ See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 You can see all possible usages of APIs in the [Test Suite (server-side Node.js)](test/server.test.js) and [Test Suite (client-side Browser & Electron & NW.js)](test/jasmine/browser.test.js), or [run them](#testing) to verify.
 
-```js
-var ImageClipper = require('image-clipper');
-var clipper = new ImageClipper();
-```
-
 ### clipper.loadImageFromUrl(url, callback)
 
 Load image from the given url. callback will be executed when loading is complete.

@@ -27,7 +27,8 @@ module.exports = function(grunt){
         },
         browserify: {
             options: {
-                banner: banner
+                banner: banner,
+                ignore: ['fs', 'buffer']
             },
             main: {
                 files: [

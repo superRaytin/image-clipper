@@ -26,16 +26,15 @@ describe('image-clipper tests in the Browser & Electron & NW.js (Node-webkit)', 
   });
 
   it('loadImageFromMemory(img).crop(...) works', function(done) {
-    var clipper = new ImageClipper({
-      canvas: 11
-    });
+    var clipper = new ImageClipper();
     var img = new Image();
     img.onload = function() {
-      clipper.loadImageFromMemory(img).crop(x, y, width, height).toDataURL(function(dataUrl) {
-        //should.exist(dataUrl);
-        expect(dataUrl.indexOf('data:image/png;base64,')).toEqual(0);
-        done();
-      });
+      clipper.loadImageFromMemory(img)
+          .crop(x, y, width, height)
+          .toDataURL(function(dataUrl) {
+            expect(dataUrl.indexOf('data:image/png;base64,')).toEqual(0);
+            done();
+          });
     };
     img.src = pngImagePath;
   });
@@ -131,11 +130,13 @@ describe('crop', function() {
   it('crop(x, y, width, height).resize(width2, height2).toFile(...) works', function(done) {
     var clipper = new ImageClipper();
     clipper.loadImageFromUrl(jpgImagePath, function() {
-      this.crop(x, y, width, height).resize(50, 50).toFile(exportDir + 'output.jpg', function(dataUrl) {
-        expect(dataUrl.indexOf('data:image/jpeg;base64,')).toEqual(0);
-        pushToBody && createDOM(dataUrl);
-        done();
-      });
+      this.crop(x, y, width, height)
+          .resize(50, 50)
+          .toFile(exportDir + 'output.jpg', function(dataUrl) {
+            expect(dataUrl.indexOf('data:image/jpeg;base64,')).toEqual(0);
+            pushToBody && createDOM(dataUrl);
+            done();
+          });
     });
   });
 });

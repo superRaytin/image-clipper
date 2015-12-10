@@ -1,6 +1,6 @@
 {
   "name": "image-clipper",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Node.js module for clip & crop JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & Electron & NW.js (Node-webkit), itself doesn't relies on any image processing libraries.",
   "main": "lib/index.js",
   "license": "MIT",

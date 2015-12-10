@@ -44,24 +44,20 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 ## Benefits for Electron & NW.js application
 
-When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient while using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [sharp](https://github.com/lovell/sharp), when you publish your application, probably the first thing you have to do is to tell your user to install multiple local dependencies, knew that `gm` relies on [GraphicsMagick](http://www.graphicsmagick.org/), `sharp` relies on [libvips](https://github.com/jcupitt/libvips).
+When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient while using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [sharp](https://github.com/lovell/sharp), when you publish your application, probably the first thing you have to do is to tell your user to install multiple local dependencies, known that `gm` relies on [GraphicsMagick](http://www.graphicsmagick.org/), `sharp` relies on [libvips](https://github.com/jcupitt/libvips).
 
 However, sometimes we just need to use a very small part of `gm` provided, and do some simple operations to image, use image-clipper to avoid your user to install those cumbersome things which may frustrated them.
 
-Electron & NW.js provide a mixture of Node.js and Browser, image-clipper just right using the Browser's native ability of Canvas and the Node's ability of File I/O, no longer needed the Canvas implementation libraries. Moreover, image-clipper use native Canvas APIs to process images, so there is no need to install any other image processing libraries too.
+Electron & NW.js provide a mixture of Node.js and Browser, image-clipper just right using the Browser's native ability of Canvas and the Node's ability of File I/O, no longer needed the Canvas implementation libraries. Moreover, image-clipper use native Canvas APIs to process images, therefore no longer needed to install any other image processing libraries too.
 
 Your desktop application will remain more stable and lightweight and your user will be peace of mind.
 
 ## Basic usage in the truly Browser
 
-HTML:
-
 ```html
 <img id="preview" alt="imageClipper preview">
 <script src="./dist/imageClipper.js"></script>
 ```
-
-JS:
 
 ```js
 var preview = document.getElementById('preview');
@@ -74,6 +70,8 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
     });
 });
 ```
+
+Also usable [via require.js](https://github.com/superRaytin/image-clipper/wiki/use-with-require.js)
 
 ### Supported browsers
 
@@ -104,7 +102,8 @@ Below is an example:
 
 ```js
 clipper.loadImageFromMemory(image)
-    this.crop(x, y, width, height).toDataURL(function(dataUrl) {
+    .crop(x, y, width, height)
+    .toDataURL(function(dataUrl) {
         console.log('cropped!');
     });
 ```
@@ -130,7 +129,7 @@ Crops the resultant image to the given width and height at the given x and y pos
 
 Write the resultant image to file.
 
-> Note: in the Browser (not contain Electron & NW.js), this method is equivalent to toDataURL, callback will still be executed.
+> Note: in the Browser (not contain Electron & NW.js), this method is the equivalent of **toDataURL**, callback will still be executed and will be passed the result data URI.
 
 - **path:** the path where the resultant image will be saved
 - **callback:** a function to be executed when saving is complete
@@ -267,7 +266,7 @@ var clipper = new ImageClipper();
 clipper.injectNodeCanvas(Canvas);
 ```
 
-Equivalent to:
+Be equivalent to:
 
 ```js
 var ImageClipper = require('image-clipper');

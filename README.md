@@ -39,7 +39,7 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 ## Differences between the server-side and the client-side on usage
 
-1. Since server-side Node.js doesn't natively support Canvas, therefore you must to specify a Canvas implementation library, such as [node-canvas](https://github.com/Automattic/node-canvas). [See usage](#clipperinjectnodecanvascanvas)
+1. Since server-side Node.js doesn't natively support Canvas, therefore you must to specify a Canvas implementation library, such as [node-canvas](https://github.com/Automattic/node-canvas). [See injectNodeCanvas() API](#clipperinjectnodecanvascanvas)
 2. `toFile()` not support to write the resultant image to file in the truly Browsers (not contain Electron & NW.js)
 
 ## Benefits for Electron & NW.js application
@@ -170,7 +170,7 @@ If your application will run on both sides, the recommendation is using the "cal
 
 ### clipper.quality(quality)
 
-Adjusts the jpeg and webp compression level. Level ranges from 0 to 100. Only supported if the requested type is `image/jpeg` or `image/webp`.
+Adjusts the jpeg and webp compression level. Level ranges from 0 to 100. Only be supported if the requested type is `image/jpeg` or `image/webp`.
 
 - **quality:** a Number between 1 and 100 indicating image quality.
 
@@ -179,7 +179,8 @@ Below is an example:
 ```js
 clipper.loadImageFromUrl('/path/to/image.jpg', function() {
     this.quality(68)
-    .crop(x, y, width, height).toDataURL(function(dataUrl) {
+    .crop(x, y, width, height)
+    .toDataURL(function(dataUrl) {
         console.log('cropped!');
     });
 });
@@ -224,7 +225,8 @@ Below is an example:
 ```js
 clipper.loadImageFromUrl('/path/to/image.jpg', function() {
     this.clear(50, 50, 100, 100)
-    .crop(0, 0, 300, 300).toDataURL(function(dataUrl) {
+    .crop(0, 0, 300, 300)
+    .toDataURL(function(dataUrl) {
         preview.src = dataUrl;
     });
 });
@@ -232,7 +234,9 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 ### clipper.reset()
 
-Used to restore the canvas, useful after `clear()`, `crop()`, `resize()` called.
+Restore the resultant image to its original.
+
+Useful if you want to clip & crop the original image when `clear()`, `crop()`, `resize()` happened.
 
 Below is an example:
 
@@ -242,7 +246,6 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
     .crop(0, 0, 300, 300)
     .toDataURL(function(dataUrl) {
         console.log('cropped, part of data has been cleared');
-
         this.reset()
         .crop(50, 50, 100, 100)
         .toDataURL(function(dataUrl2) {
@@ -252,9 +255,11 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 });
 ```
 
+Or you can also create a new instance to do that.
+
 ### clipper.injectNodeCanvas(Canvas)
 
-Inject canvas implementation library into the context of instance. Can be used only on the sever-side Node.js.
+Inject canvas implementation library into the instance's context. You should use this only on the sever-side Node.js.
 
 Usage:
 
@@ -278,7 +283,7 @@ var clipper = new ImageClipper({
 
 ### clipper.getCanvas()
 
-Return current Canvas object.
+Return the current Canvas object.
 
 ```js
 var canvas = clipper.getCanvas();

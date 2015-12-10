@@ -39,7 +39,7 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 ## Differences between the server-side and the client-side on usage
 
-1. Since server-side Node.js doesn't natively support Canvas, therefore you must to specify a Canvas implementation library, such as [node-canvas](https://github.com/Automattic/node-canvas). [See injectNodeCanvas() API](#clipperinjectnodecanvascanvas)
+1. On the server-side Node.js, since it doesn't natively support Canvas, therefore you should specify a Canvas implementation library, such as [node-canvas](https://github.com/Automattic/node-canvas). [See injectNodeCanvas() API](#clipperinjectnodecanvascanvas)
 2. `toFile()` not support to write the resultant image to file in the truly Browsers (not contain Electron & NW.js)
 
 ## Benefits for Electron & NW.js application

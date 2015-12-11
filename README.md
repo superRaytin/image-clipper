@@ -236,7 +236,7 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 Restore the resultant image to its original.
 
-Useful if you want to clip & crop the original image when `clear()`, `crop()`, `resize()` happened.
+Useful if you want to clip & crop the original image after `clear()`, `crop()`, `resize()` happened.
 
 Below is an example:
 
@@ -290,6 +290,15 @@ var canvas = clipper.getCanvas();
 // canvas.width
 // canvas.height
 ```
+
+# Contributing :pray:
+
+```
+$ git clone https://github.com/superRaytin/image-clipper.git
+$ cd image-clipper && npm install
+```
+
+Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon releases, patches for features, bug fixes, documentation, examples and others are certainly welcome.
 
 # Testing
 

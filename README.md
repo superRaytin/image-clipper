@@ -150,7 +150,7 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 Return a string containing the data URI of current resultant canvas.
 
 - **quality:** a Number between 1 and 100 indicating image quality.
-- **callback:** function(dataUrl), a function to be executed when converting is complete, callback will be passed the result data URI.
+- **callback:** a function to be executed when converting is complete, callback will be passed the result data URI.
 
 Using on the server-side Node.js:
 
@@ -259,7 +259,7 @@ Or you can also create a new instance to do that.
 
 ### clipper.injectNodeCanvas(Canvas)
 
-Inject canvas implementation library into the instance's context. You should use this only on the sever-side Node.js.
+Inject canvas implementation library into the instance context. You should use this only on the sever-side Node.js.
 
 Usage:
 
@@ -298,17 +298,17 @@ $ git clone https://github.com/superRaytin/image-clipper.git
 $ cd image-clipper && npm install
 ```
 
-Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon releases, patches for features, bug fixes, documentation, examples and others are certainly welcome.
+Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon releases. Patches for features, bug fixes, documentation, examples and others are certainly welcome.
 
 # Testing
 
-### Testing on the server-side Node.js (with node-canvas)
+### on the server-side Node.js (with node-canvas)
 
 ```
 npm test
 ```
 
-### Testing on the client-side (Browser & Electron & NW.js)
+### on the client-side (Browser & Electron & NW.js)
 
 First install jasmine:
 

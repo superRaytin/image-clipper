@@ -45,10 +45,10 @@ function ImageClipper(options) {
 
 ImageClipper.prototype.defaults = {
   canvas: null,
-  // quality level, default: 92
+  // compression level, default: 92
   quality: 92,
-  maxQualityLevel: 100,
-  minQualityLevel: 1,
+  maxQuality: 100,
+  minQuality: 1,
   // output buffer size in bytes for JPEG while using node-canvas
   bufsize: 4096
 }
@@ -83,7 +83,7 @@ ImageClipper.prototype.loadImageFromMemory = function (source) {
 }
 
 /**
- * Load image from the given url.
+ * Load image from the given path.
  *
  * @param {String} path, the path where the source image
  * @param {Function} callback, to be executed when loading is complete
@@ -103,6 +103,12 @@ ImageClipper.prototype.loadImageFromUrl = function (path, callback) {
   image.src = path;
 }
 
+/**
+ * Load image through loadImageFromUrl or loadImageFromMemory.
+ *
+ * @param {String | Image} source, the path where the source image
+ * @param {Function} callback, to be executed when loading is complete
+ * */
 ImageClipper.prototype.image = function (source, callback) {
   var options = this.options;
 
@@ -136,7 +142,7 @@ ImageClipper.prototype.image = function (source, callback) {
 
     if (callback && utils.type(callback) === 'Function') {
       callback.call(this);
-      console.warn('No need to specify callback when load from memory, please use  chain-capable method directly like this: clipper(Image).crop(...).resize(...)');
+      console.warn('No need to specify callback when load from memory, please use chain-capable method directly like this: clipper(Image).crop(...).resize(...)');
     }
 
     return this;
@@ -295,7 +301,7 @@ ImageClipper.prototype.quality = function (level) {
   level = parseFloat(level);
 
   // this will always be between 'min' and 'max'
-  level = utils.rangeNumber(level, options.minQualityLevel, options.maxQualityLevel);
+  level = utils.rangeNumber(level, options.minQuality, options.maxQuality);
 
   options.quality = level;
 
@@ -313,8 +319,8 @@ ImageClipper.prototype.toDataURL = function (quality, callback) {
   var self = this;
   var options = this.options;
   var qualityLevel = options.quality;
-  var minQualityLevel = options.minQualityLevel;
-  var maxQualityLevel = options.maxQualityLevel;
+  var minQuality = options.minQuality;
+  var maxQuality = options.maxQuality;
   var imageFormat = options.imageFormat;
   var bufsize = options.bufsize;
 
@@ -330,7 +336,7 @@ ImageClipper.prototype.toDataURL = function (quality, callback) {
   else if (arguments.length == 1) {
     // toDataURL(quality)
     if (typeof quality === 'number') {
-      quality = utils.rangeNumber(quality, minQualityLevel, maxQualityLevel);
+      quality = utils.rangeNumber(quality, minQuality, maxQuality);
     }
     // toDataURL(callback)
     else if (typeof quality === 'function') {
@@ -340,7 +346,7 @@ ImageClipper.prototype.toDataURL = function (quality, callback) {
   }
   // toDataURL(quality, callback)
   else if (arguments.length == 2) {
-    quality = utils.rangeNumber(quality, minQualityLevel, maxQualityLevel);
+    quality = utils.rangeNumber(quality, minQuality, maxQuality);
   }
 
   var canvas = this.canvas;
@@ -474,7 +480,7 @@ ImageClipper.__configure = function (name, value) {
   // the quality number requires special handling,
   // to ensure that the number will always be between 'min' and 'max'
   if (defaults.quality) {
-    defaults.quality = utils.rangeNumber(defaults.quality, defaults.minQualityLevel, defaults.maxQualityLevel);
+    defaults.quality = utils.rangeNumber(defaults.quality, defaults.minQuality, defaults.maxQuality);
   }
 }
 

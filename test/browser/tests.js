@@ -3,7 +3,7 @@ var Clipper = window.imageClipper;
 var jpgImagePath = '../../example/house.jpg';
 var pngImagePath = '../../example/building.png';
 var exportDir = '../../example/';
-var pushToBody = true;
+var pushToBody = false;
 
 var x = 20;
 var y = 20;

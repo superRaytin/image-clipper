@@ -133,9 +133,9 @@ Create an image-clipper instance with some optional parameters. functionality is
 var clipper = Clipper({quality: 68, maxQuality: 92});
 
 clipper.image(source)
-    .toFile(function() {
-        console.log('saved!');
-    })
+    .toFile('/path/to/result.jpg', function() {
+       console.log('saved!');
+    });
 ```
 
 ### clipper.image(path, callback)
@@ -156,9 +156,9 @@ Load source image from the memory after initialized. This process will be perfor
 
 ```js
 clipper.image(source)
-    .toFile(function() {
-        console.log('saved!');
-    });
+    .toFile('/path/to/result.jpg', function() {
+       console.log('saved!');
+   });
 ```
 
 In this case, the best practice is to place the code in `onload`:
@@ -242,8 +242,8 @@ Below is an example:
 ```js
 Clipper('/path/to/image.jpg', function() {
     this.quality(68)
-    .toFile(function() {
-        console.log('saved!');
+    .toFile('/path/to/result.jpg', function() {
+       console.log('saved!');
     });
 });
 ```

@@ -16,7 +16,7 @@ function createDOM(dataUrl) {
   document.body.appendChild(img);
 }
 
-describe('entrance method clipper() works', function() {
+describe('entrance method clipper()', function() {
   it('clipper(path, function() {...}) works', function(done) {
     Clipper(jpgImagePath, function() {
       var initialized = !!(this.canvas && this.options.imageFormat);
@@ -69,6 +69,11 @@ describe('entrance method clipper() works', function() {
       });
     };
     img.src = pngImagePath;
+  });
+
+  it('clipper() works', function() {
+    var clipper = Clipper();
+    should(!!clipper.options.quality).equal(true);
   });
 
   it('clipper({quality: Number}) works', function() {
@@ -316,24 +321,24 @@ describe('quality', function() {
 
   it('works when quality level > max quality level', function() {
     var clipper = Clipper({
-      maxQualityLevel: 92
+      maxQuality: 92
     });
     clipper.quality(101);
-    clipper.options.quality.should.equal(clipper.options.maxQualityLevel);
+    clipper.options.quality.should.equal(clipper.options.maxQuality);
     clipper.quality(92.2);
-    clipper.options.quality.should.equal(clipper.options.maxQualityLevel);
+    clipper.options.quality.should.equal(clipper.options.maxQuality);
   });
 
   it('works when quality level < min quality level', function() {
     var clipper = Clipper({
-      minQualityLevel: 1
+      minQuality: 1
     });
     clipper.quality(0.1);
-    clipper.options.quality.should.equal(clipper.options.minQualityLevel);
+    clipper.options.quality.should.equal(clipper.options.minQuality);
     clipper.quality(-1);
-    clipper.options.quality.should.equal(clipper.options.minQualityLevel);
+    clipper.options.quality.should.equal(clipper.options.minQuality);
     clipper.quality(0);
-    clipper.options.quality.should.equal(clipper.options.minQualityLevel);
+    clipper.options.quality.should.equal(clipper.options.minQuality);
   });
 });
 
@@ -342,50 +347,50 @@ describe('configure', function() {
     var clipper = Clipper();
     clipper.configure('quality', 90);
     clipper.options.quality.should.equal(90);
-    clipper.configure('minQualityLevel', 8);
-    clipper.options.minQualityLevel.should.equal(8);
-    clipper.configure('maxQualityLevel', 78);
-    clipper.options.maxQualityLevel.should.equal(78);
+    clipper.configure('minQuality', 8);
+    clipper.options.minQuality.should.equal(8);
+    clipper.configure('maxQuality', 78);
+    clipper.options.maxQuality.should.equal(78);
   });
 
   it('instance configure({...}) works', function() {
     var clipper = Clipper();
     clipper.configure({
       quality: 67,
-      minQualityLevel: 4,
-      maxQualityLevel: 97
+      minQuality: 4,
+      maxQuality: 97
     });
     clipper.options.quality.should.equal(67);
-    clipper.options.minQualityLevel.should.equal(4);
-    clipper.options.maxQualityLevel.should.equal(97);
+    clipper.options.minQuality.should.equal(4);
+    clipper.options.maxQuality.should.equal(97);
   });
 
   it('global configure(name, value) works', function() {
     Clipper.configure('quality', 67);
-    Clipper.configure('minQualityLevel', 4);
-    Clipper.configure('maxQualityLevel', 97);
+    Clipper.configure('minQuality', 4);
+    Clipper.configure('maxQuality', 97);
     var clipper = Clipper();
     clipper.options.quality.should.equal(67);
-    clipper.options.minQualityLevel.should.equal(4);
-    clipper.options.maxQualityLevel.should.equal(97);
+    clipper.options.minQuality.should.equal(4);
+    clipper.options.maxQuality.should.equal(97);
   });
 
   it('global configure({...}) works', function() {
     Clipper.configure({
       quality: 68,
-      minQualityLevel: 7,
-      maxQualityLevel: 99
+      minQuality: 7,
+      maxQuality: 99
     });
     var clipper = Clipper();
     clipper.options.quality.should.equal(68);
-    clipper.options.minQualityLevel.should.equal(7);
-    clipper.options.maxQualityLevel.should.equal(99);
+    clipper.options.minQuality.should.equal(7);
+    clipper.options.maxQuality.should.equal(99);
     clipper.configure('quality', 90);
     clipper.options.quality.should.equal(90);
-    clipper.configure('minQualityLevel', 8);
-    clipper.options.minQualityLevel.should.equal(8);
-    clipper.configure('maxQualityLevel', 78);
-    clipper.options.maxQualityLevel.should.equal(78);
+    clipper.configure('minQuality', 8);
+    clipper.options.minQuality.should.equal(8);
+    clipper.configure('maxQuality', 78);
+    clipper.options.maxQuality.should.equal(78);
   });
 });
 

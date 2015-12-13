@@ -18,18 +18,12 @@
 # Quick Start
 
 ```js
-var ImageClipper = require('image-clipper');
-var clipper = new ImageClipper();
+var Clipper = require('image-clipper');
 
-var x = 20;
-var y = 20;
-var width = 100;
-var height = 100;
-
-clipper.loadImageFromUrl('/path/to/image.jpg', function() {
-    this.crop(x, y, width, height)
+Clipper('/path/to/image.jpg', function() {
+    this.crop(20, 20, 100, 100)
     .resize(50, 50)
-    .toFile('/path/to/image-cropped.jpg', function() {
+    .toFile('/path/to/result.jpg', function() {
        console.log('saved!');
    });
 });
@@ -61,8 +55,8 @@ Your desktop application will remain more stable and lightweight and your user w
 
 ```js
 var preview = document.getElementById('preview');
-var clipper = new ImageClipper();
-clipper.loadImageFromUrl('/path/to/image.jpg', function() {
+var clipper = window.imageClipper;
+clipper('/path/to/image.jpg', function() {
     this.crop(x, y, width, height)
     .toDataURL(function(dataUrl) {
         console.log('cropped!');
@@ -71,7 +65,7 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 });
 ```
 
-Also usable [via require.js](https://github.com/superRaytin/image-clipper/wiki/use-with-require.js)
+Also usable [via AMD or CMD](https://github.com/superRaytin/image-clipper/wiki/use-via-AMD-or-CMD)
 
 ### Supported browsers
 
@@ -79,41 +73,99 @@ See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 # API
 
-You can see all possible usages of APIs in the [Test Suite (server-side Node.js)](test/server.test.js) and [Test Suite (client-side Browser & Electron & NW.js)](test/jasmine/browser.test.js), or [run them](#testing) to verify.
+Listed below are commonly used APIs, or you can see all of the possible usages of APIs in the [Test Suite (server-side Node.js)](test/tests.js) and [Test Suite (client-side Browser & Electron & NW.js)](test/browser/tests.js), or [run them](#testing) to verify.
 
-### clipper.loadImageFromUrl(url, callback)
+Just start with `Clipper()`, and `image-clipper` provides chain-capable styles API.
 
-Load image from the given url. callback will be executed when loading is complete.
+### Clipper(path [, options], callback)
 
-- **url:** the path where the source image
-- **callback:** function()
+Load image from the given path with some optional parameters. This process will be performed asynchronously.
+
+- **path:** the path where the source image
+- **options:** properties configurable in the list of available values, reference [configure()](#configure)
+- **callback:** a function will be executed when loading is complete.
 
 > Note: in all callbacks, allow using `this` to call instance methods
 
-### clipper.loadImageFromMemory(image)
+```js
+Clipper('/path/to/image.jpg', function() {
+    .toFile('/path/to/result.jpg', function() {
+       console.log('saved!');
+   });
+});
 
-Load image from the memory.
+Clipper('/path/to/image.jpg', {quality: 50}, function() {
+	// ...
+});
+```
 
-- **image:** anything ctx.drawImage() accepts, usually HTMLImageElement, HTMLCanvasElement, HTMLVideoElement or [ImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap). Keep in mind that [origin policies](https://en.wikipedia.org/wiki/Same-origin_policy) apply to the image source, and you may not use cross-domain images without [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+### Clipper(source [, options])
 
-`clipper.loadImageFromUrl` will eventually using this method to load image.
+Load image from memory.
 
-Below is an example:
+- **source:** anything ctx.drawImage() accepts, usually HTMLImageElement, HTMLCanvasElement, HTMLVideoElement or [ImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap). Keep in mind that [origin policies](https://en.wikipedia.org/wiki/Same-origin_policy) apply to the image source, and you may not use cross-domain images without [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 ```js
-clipper.loadImageFromMemory(image)
-    .crop(x, y, width, height)
+Clipper(source)
+    .toDataURL(function(dataUrl) {
+        console.log('cropped!');
+    });
+
+Clipper(source, {quality: 50})
     .toDataURL(function(dataUrl) {
         console.log('cropped!');
     });
 ```
 
-In this case, the best practice is to place the code in `onload` callback:
+In this case, the best practice is to place the code in `onload`:
 
 ```js
-var image = new Image;
-image.onload(function(){ clipper.loadImageFromMemory(...) });
-image.src = '/path/to/image.jpg';
+var source = new Image;
+source.onload(function(){ Clipper(source).resize(...) });
+source.src = '/path/to/image.jpg';
+```
+
+### Clipper(options)
+
+Create an image-clipper instance with some optional parameters. functionality is identical to `configure()`, see `configure()` API below.
+
+```js
+var clipper = Clipper({quality: 68, maxQuality: 92});
+clipper.image(source)
+    .toFile(function() {
+        console.log('saved!');
+    })
+```
+
+### clipper.image(path, callback)
+
+Load source image from the memory after initialized. Functionality is identical to `Clipper(path, callback)`.
+
+```js
+clipper.image('/path/to/image.jpg', function() {
+    .toFile('/path/to/result.jpg', function() {
+       console.log('saved!');
+   });
+});
+```
+
+### clipper.image(source)
+
+Load source image from the memory after initialized. This process will be performed synchronously; functionality is identical to `Clipper(source)`.
+
+```js
+clipper.image(source)
+    .toFile(function() {
+        console.log('saved!');
+    });
+```
+
+In this case, the best practice is to place the code in `onload`:
+
+```js
+var source = new Image;
+source.onload(function(){ clipper.image(source).toFile(...) });
+source.src = '/path/to/image.jpg';
 ```
 
 ### clipper.crop(x, y, width, height)
@@ -125,11 +177,19 @@ Crops the resultant image to the given width and height at the given x and y pos
 - **width:** the rectangle's width
 - **height:** the rectangle's height
 
+```js
+Clipper(source)
+    .crop(x, y, width, height)
+    .toDataURL(function(dataUrl) {
+        console.log('cropped!');
+    });
+```
+
 ### clipper.toFile(path, callback)
 
 Write the resultant image to file.
 
-> Note: in the Browser (not contain Electron & NW.js), this method is the equivalent of **toDataURL**, callback will still be executed and will be passed the result data URI.
+> Note: in the Browser (not contain Electron & NW.js), this method is identical to **toDataURL()**, and callback will still be executed and will be passed the result data URI.
 
 - **path:** the path where the resultant image will be saved
 - **callback:** a function to be executed when saving is complete
@@ -137,9 +197,8 @@ Write the resultant image to file.
 Below is an example:
 
 ```js
-clipper.loadImageFromUrl('/path/to/image.jpg', function() {
-    this.crop(x, y, width, height)
-    .toFile('/path/to/image-cropped.jpg', function() {
+Clipper('/path/to/image.jpg', function() {
+    .toFile('/path/to/result.jpg', function() {
         console.log('saved!');
     });
 });
@@ -147,9 +206,11 @@ clipper.loadImageFromUrl('/path/to/image.jpg', function() {
 
 ### clipper.toDataURL([quality, ]callback)
 
-Return a string containing the data URI of current resultant canvas.
+Return a string containing the data URI of current resultant canvas by optional compression level.
 
-- **quality:** a Number between 1 and 100 indicating image quality.
+> Note: the quality (if provided) will only affect current `toDataURL()`
+
+- **quality:** a Number between 1 and 100 indicating image quality. If not provided, this will be get from `quality()`
 - **callback:** a function to be executed when converting is complete, callback will be passed the result data URI.
 
 Using on the server-side Node.js:
@@ -170,18 +231,17 @@ If your application will run on both sides, the recommendation is using the "cal
 
 ### clipper.quality(quality)
 
-Adjusts the jpeg and webp compression level. Level ranges from 0 to 100. Only be supported if the requested type is `image/jpeg` or `image/webp`.
+Adjusts the jpeg and webp compression level. Level ranges from 1 to 100. Only be supported if the requested type is `image/jpeg` or `image/webp`.
 
 - **quality:** a Number between 1 and 100 indicating image quality.
 
 Below is an example:
 
 ```js
-clipper.loadImageFromUrl('/path/to/image.jpg', function() {
+clipper('/path/to/image.jpg', function() {
     this.quality(68)
-    .crop(x, y, width, height)
-    .toDataURL(function(dataUrl) {
-        console.log('cropped!');
+    .toFile(function() {
+        console.log('saved!');
     });
 });
 ```
@@ -223,7 +283,7 @@ Removes rectangular pixels from the given width and height at the given x and y 
 Below is an example:
 
 ```js
-clipper.loadImageFromUrl('/path/to/image.jpg', function() {
+Clipper('/path/to/image.jpg', function() {
     this.clear(50, 50, 100, 100)
     .crop(0, 0, 300, 300)
     .toDataURL(function(dataUrl) {
@@ -241,7 +301,7 @@ Useful if you want to clip & crop the original image after `clear()`, `crop()`, 
 Below is an example:
 
 ```js
-clipper.loadImageFromUrl('/path/to/image.jpg', function() {
+clipper('/path/to/image.jpg', function() {
     this.clear(50, 50, 100, 100)
     .crop(0, 0, 300, 300)
     .toDataURL(function(dataUrl) {
@@ -264,21 +324,26 @@ Inject canvas implementation library into the instance context. You should use t
 Usage:
 
 ```js
-var ImageClipper = require('image-clipper');
+var Clipper = require('image-clipper');
 var Canvas = require('canvas');
-var clipper = new ImageClipper();
+var clipper = Clipper();
 
 clipper.injectNodeCanvas(Canvas);
 ```
 
-Be equivalent to:
+The above is identical to:
 
 ```js
-var ImageClipper = require('image-clipper');
-var Canvas = require('canvas');
-var clipper = new ImageClipper({
+var Clipper = require('image-clipper');
+var clipper = Clipper({
     canvas: Canvas
 });
+```
+
+and:
+
+```js
+clipper.configure('canvas', Canvas);
 ```
 
 ### clipper.getCanvas()
@@ -291,7 +356,42 @@ var canvas = clipper.getCanvas();
 // canvas.height
 ```
 
-# Contributing :pray:
+### clipper.configure(options)
+
+Configure global properties. Properties changed by this method (same properties configurable through the constructor) will take effect for every instance created after the change.
+
+```js
+var Clipper = require('image-clipper');
+Clipper.configure({
+	canvas: require('canvas')
+});
+```
+
+Or configure instance properties, this will just take effect for current instance and will override the global settings.
+
+```js
+var Clipper = require('image-clipper');
+var clipper = Clipper();
+clipper.configure({
+	canvas: require('canvas')
+});
+```
+
+Available properties:
+
+- **canvas** canvas implementation library, default: null
+- **quality** compression level, default: 92
+- **maxQuality** maximum compression level, default: 100
+- **minQuality** minimum compression level, default: 1
+- **bufsize** output buffer size in bytes for JPEG while using node-canvas, default: 4096
+
+Another usage for modifying single property:
+
+```js
+clipper.configure('bufsize', 2048)
+```
+
+# Contributing
 
 ```
 $ git clone https://github.com/superRaytin/image-clipper.git
@@ -302,21 +402,19 @@ Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon relea
 
 # Testing
 
-### on the server-side Node.js (with node-canvas)
+### Node.js (with node-canvas)
 
 ```
 npm test
 ```
 
-### on the client-side (Browser & Electron & NW.js)
-
-First install jasmine:
+### Browser & Electron & NW.js
 
 ```
-cd test/jasmine && bower install jasmine
+npm start
 ```
 
-Then you can run the tests using `npm start` and open http://localhost:9100/test/jasmine/runner.html
+Then open http://localhost:9100/test/browser/index.html
 
 # License
 

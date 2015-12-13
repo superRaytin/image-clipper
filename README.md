@@ -55,8 +55,8 @@ Your desktop application will remain more stable and lightweight and your user w
 
 ```js
 var preview = document.getElementById('preview');
-var clipper = window.imageClipper;
-clipper('/path/to/image.jpg', function() {
+
+imageClipper('/path/to/image.jpg', function() {
     this.crop(x, y, width, height)
     .toDataURL(function(dataUrl) {
         console.log('cropped!');
@@ -82,7 +82,7 @@ Just start with `Clipper()`, and `image-clipper` provides chain-capable styles A
 Load image from the given path with some optional parameters. This process will be performed asynchronously.
 
 - **path:** the path where the source image
-- **options:** properties configurable in the list of available values, reference [configure()](#configure)
+- **options:** properties configurable in the list of available values, reference [configure()](#clipperconfigureoptions)
 - **callback:** a function will be executed when loading is complete.
 
 > Note: in all callbacks, allow using `this` to call instance methods
@@ -131,6 +131,7 @@ Create an image-clipper instance with some optional parameters. functionality is
 
 ```js
 var clipper = Clipper({quality: 68, maxQuality: 92});
+
 clipper.image(source)
     .toFile(function() {
         console.log('saved!');
@@ -216,6 +217,7 @@ Return a string containing the data URI of current resultant canvas by optional 
 Using on the server-side Node.js:
 
 ```js
+var clipper = Clipper();
 clipper.toDataURL(function(dataUrl) {...});
 clipper.toDataURL(quality, function(dataUrl) {...});
 ```
@@ -238,7 +240,7 @@ Adjusts the jpeg and webp compression level. Level ranges from 1 to 100. Only be
 Below is an example:
 
 ```js
-clipper('/path/to/image.jpg', function() {
+Clipper('/path/to/image.jpg', function() {
     this.quality(68)
     .toFile(function() {
         console.log('saved!');
@@ -252,6 +254,14 @@ Resize the resultant image to the given width and height.
 
 - **width:** Number of pixels wide
 - **height:** Number of pixels high
+
+```js
+var clipper = Clipper();
+
+clipper.image('/path/to/image.jpg', function() {
+    this.resize(100);
+});
+```
 
 To resize the resultant image to a width of 50px while maintaining aspect ratio:
 
@@ -388,7 +398,7 @@ Available properties:
 Another usage for modifying single property:
 
 ```js
-clipper.configure('bufsize', 2048)
+clipper.configure('bufsize', 2048);
 ```
 
 # Contributing

@@ -74,9 +74,9 @@ See [caniuse.com/canvas](http://caniuse.com/canvas)
 
 # API
 
-Listed below are commonly used APIs, or you can see all of the possible usages of APIs in the [Test Suite (server-side Node.js)](test/tests.js) and [Test Suite (client-side Browser & Electron & NW.js)](test/browser/tests.js), or [run them](#testing) to verify.
+Listed below are commonly used APIs, you can see all of the possible usages of APIs in the [Test Suite (server-side Node.js)](test/tests.js) and [Test Suite (client-side Browser & Electron & NW.js)](test/browser/tests.js), or [run them](#testing) to verify.
 
-Just start with `Clipper()`, and `image-clipper` provides chain-capable styles API.
+Just start with `Clipper()`, chain-capable styles provided.
 
 ### Clipper(path [, options], callback)
 
@@ -128,7 +128,7 @@ source.src = '/path/to/image.jpg';
 
 ### Clipper(options)
 
-Create an image-clipper instance with some optional parameters. functionality is identical to `configure()`, see `configure()` API below.
+Create an image-clipper instance with some optional parameters.
 
 ```js
 var clipper = Clipper({quality: 68, maxQuality: 92});
@@ -218,7 +218,7 @@ Return a string containing the data URI of current resultant canvas by optional 
 Using on the server-side Node.js:
 
 ```js
-var clipper = Clipper();
+var clipper = Clipper(source);
 clipper.toDataURL(function(dataUrl) {...});
 clipper.toDataURL(quality, function(dataUrl) {...});
 ```
@@ -378,7 +378,7 @@ Clipper.configure({
 });
 ```
 
-Or configure instance properties, this will just take effect for current instance and will override the global settings.
+Or configure instance properties, this will only take effect for current instance and will override the global settings.
 
 ```js
 var Clipper = require('image-clipper');
@@ -401,6 +401,8 @@ Another usage for modifying single property:
 ```js
 clipper.configure('bufsize', 2048);
 ```
+
+**Happy Clipping!**
 
 # Contributing
 

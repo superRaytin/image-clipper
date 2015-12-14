@@ -90,7 +90,7 @@ Load image from the given path with some optional parameters. This process will 
 
 ```js
 Clipper('/path/to/image.jpg', function() {
-    .toFile('/path/to/result.jpg', function() {
+    this.toFile('/path/to/result.jpg', function() {
        console.log('saved!');
    });
 });
@@ -145,7 +145,7 @@ Load source image from the memory after initialized. Functionality is identical 
 
 ```js
 clipper.image('/path/to/image.jpg', function() {
-    .toFile('/path/to/result.jpg', function() {
+    this.toFile('/path/to/result.jpg', function() {
        console.log('saved!');
    });
 });
@@ -200,7 +200,7 @@ Below is an example:
 
 ```js
 Clipper('/path/to/image.jpg', function() {
-    .toFile('/path/to/result.jpg', function() {
+    this.toFile('/path/to/result.jpg', function() {
         console.log('saved!');
     });
 });

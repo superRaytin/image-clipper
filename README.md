@@ -359,7 +359,7 @@ clipper.configure('canvas', Canvas);
 
 ### clipper.getCanvas()
 
-Return the current Canvas object.
+Return the current instance Canvas object.
 
 ```js
 var canvas = clipper.getCanvas();
@@ -369,7 +369,7 @@ var canvas = clipper.getCanvas();
 
 ### clipper.configure(options)
 
-Configure global properties. Properties changed by this method (same properties configurable through the constructor) will take effect for every instance created after the change.
+Configure properties (same properties configurable through the constructor) for global or the instance.
 
 ```js
 var Clipper = require('image-clipper');
@@ -378,7 +378,9 @@ Clipper.configure({
 });
 ```
 
-Or configure instance properties, this will only take effect for current instance and will override the global settings.
+Properties changed by the `Clipper.configure` method will take effect for every instance created after the change.
+
+Or you can configure instance properties, below will only take effect for current instance and will override the global settings.
 
 ```js
 var Clipper = require('image-clipper');

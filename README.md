@@ -102,7 +102,7 @@ Clipper('/path/to/image.jpg', {quality: 50}, function() {
 
 ### Clipper(source [, options])
 
-Load image from memory.
+Load image from memory. This process will be performed synchronously.
 
 - **source:** anything ctx.drawImage() accepts, usually HTMLImageElement, HTMLCanvasElement, HTMLVideoElement or [ImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap). Keep in mind that [origin policies](https://en.wikipedia.org/wiki/Same-origin_policy) apply to the image source, and you may not use cross-domain images without [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
@@ -374,7 +374,7 @@ Configure properties (same properties configurable through the constructor) for 
 ```js
 var Clipper = require('image-clipper');
 Clipper.configure({
-	canvas: require('canvas')
+    canvas: require('canvas')
 });
 ```
 
@@ -386,7 +386,7 @@ Or you can configure instance properties, below will only take effect for curren
 var Clipper = require('image-clipper');
 var clipper = Clipper();
 clipper.configure({
-	canvas: require('canvas')
+    canvas: require('canvas')
 });
 ```
 

@@ -73,7 +73,7 @@ Load image from the given path with some optional parameters. This process will 
 
 - **path:** the path where the source image
 - **options:** properties configurable in the list of available values, reference [configure()](#clipperconfigureoptions)
-- **callback:** a function will be executed when loading is complete.
+- **callback:** a function to be executed when loading is complete.
 
 > Note: in all callbacks, allow using `this` to call instance methods
 
@@ -149,14 +149,6 @@ clipper.image(source)
     .toFile('/path/to/result.jpg', function() {
        console.log('saved!');
    });
-```
-
-In this case, the best practice is to place the code in `onload`:
-
-```js
-var source = new Image;
-source.onload(function(){ clipper.image(source).toFile(...) });
-source.src = '/path/to/image.jpg';
 ```
 
 ### clipper.crop(x, y, width, height)

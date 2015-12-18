@@ -32,22 +32,11 @@ Clipper('/path/to/image.jpg', function() {
 
 [API Documentation](#api)
 
-## Differences between the server-side and the client-side on usage
+[Differences between the server-side and the client-side on usage](#server-client-diff)
 
-1. On the server-side Node.js, since it doesn't natively support Canvas, therefore you should specify a Canvas implementation library, such as [node-canvas](https://github.com/Automattic/node-canvas). [See injectNodeCanvas() API](#clipperinjectnodecanvascanvas)
-2. `toFile()` not support to write the resultant image to file in the truly Browsers (not contain Electron & NW.js)
+[Benefits for Electron & NW.js application](#benefits-for-electron-nw)
 
-## Benefits for Electron & NW.js application
-
-When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient while using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [sharp](https://github.com/lovell/sharp), when you publish your application, probably the first thing you have to do is to tell your user to install multiple local dependencies, known that `gm` relies on [GraphicsMagick](http://www.graphicsmagick.org/), `sharp` relies on [libvips](https://github.com/jcupitt/libvips).
-
-However, sometimes we just need to use a very small part of `gm` provided, and do some simple operations to image, use image-clipper to avoid your user to install those cumbersome things which may frustrated them.
-
-Electron & NW.js provide a mixture of Node.js and Browser, image-clipper just right using the Browser's native ability of Canvas and the Node's ability of File I/O, no longer needed the Canvas implementation libraries. Moreover, image-clipper use native Canvas APIs to process images, therefore no longer needed to install any other image processing libraries too.
-
-Your desktop application will remain more stable and lightweight and your user will be peace of mind.
-
-## Basic usage in the truly Browser
+## Basic usage in the Browser
 
 ```html
 <img id="preview" alt="imageClipper preview">
@@ -66,7 +55,7 @@ imageClipper('/path/to/image.jpg', function() {
 });
 ```
 
-Also usable [via AMD or CMD](https://github.com/superRaytin/image-clipper/wiki/use-via-AMD-or-CMD)
+You can also use `image-clipper` [via AMD or CMD](https://github.com/superRaytin/image-clipper/wiki/use-via-AMD-or-CMD)
 
 ### Supported browsers
 
@@ -328,6 +317,7 @@ clipper('/path/to/image.jpg', function() {
 
 Or you can also create a new instance to do that.
 
+<a name="inject-node-canvas"></a>
 ### clipper.injectNodeCanvas(Canvas)
 
 Inject canvas implementation library into the instance context. You should use this only on the sever-side Node.js.
@@ -403,6 +393,23 @@ Another usage for modifying single property:
 ```js
 clipper.configure('bufsize', 2048);
 ```
+
+<a name="server-client-diff"></a>
+## Differences between the server-side and the client-side on usage
+
+1. If you use `image-clipper` on the server-side Node.js, since it doesn't natively support Canvas, you should specify a Canvas implementation library like [node-canvas](https://github.com/Automattic/node-canvas). See [injectNodeCanvas() API](#inject-node-canvas) for detail.
+2. The `toFile()` doesn't support to write the resultant image to file in the Browsers (not contain Electron & NW.js)
+
+<a name="benefits-for-electron-nw"></a>
+## Benefits for Electron & NW.js application
+
+When we develop [Electron](https://github.com/atom/electron/) or [NW.js](https://github.com/nwjs/nw.js) application, I found it's very inconvenient while using image processing libraries such as [gm](https://github.com/aheckmann/gm) and [sharp](https://github.com/lovell/sharp), when you publish your application, probably the first thing you have to do is to tell your user to install multiple local dependencies, known that `gm` relies on [GraphicsMagick](http://www.graphicsmagick.org/), `sharp` relies on [libvips](https://github.com/jcupitt/libvips).
+
+However, sometimes we just need to use a very small part of `gm` provided, and do some simple operations to image, use image-clipper to avoid your user to install those cumbersome things which may frustrated them.
+
+Electron & NW.js provide a mixture of Node.js and Browser, image-clipper just right using the Browser's native ability of Canvas and the Node's ability of File I/O, no longer needed the Canvas implementation libraries. Moreover, image-clipper use native Canvas APIs to process images, therefore no longer needed to install any other image processing libraries too.
+
+Your desktop application will remain more stable and lightweight and your user will be peace of mind.
 
 **Happy Clipping!**
 

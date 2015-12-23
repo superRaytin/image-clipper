@@ -33,4 +33,4 @@ sudo: false
 
 before_install:
   # Upgrade `npm` to avoid semver issues
-  - npm install -g npm@2.3.0
+  - if [[ $TRAVIS_NODE_VERSION == 0.10 ]]; then npm install -g npm@2.3.0; fi

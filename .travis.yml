@@ -25,8 +25,7 @@ addons:
       - g++-4.8
 env:
   - CXX=g++-4.8
-sudo: false
-
 before_install:
-  # Upgrade `npm` to avoid semver issues
-  - npm -g install npm@3.5.2
+  - if [[ $TRAVIS_NODE_VERSION == 0.8 ]]; then npm install -g npm@1.4.28; fi
+  - npm explore npm -g -- npm install node-gyp@latest
+sudo: false

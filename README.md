@@ -421,8 +421,8 @@ Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon relea
 
 If you are using this library in one of your projects, add it in this list :)
 
-- [https://github.com/superRaytin/puzzler](Puzzler)
-- [https://github.com/superRaytin/image-to-slices](image-to-slices)
+- [Puzzler](https://github.com/superRaytin/puzzler)
+- [image-to-slices](https://github.com/superRaytin/image-to-slices)
 
 # Testing
 

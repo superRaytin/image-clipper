@@ -3,8 +3,9 @@ node_js:
   - "0.12"
   - "0.11"
   - "0.10"
-  - "4.2.1"
-  - "5.1"
+  - "0.8"
+  - "4"
+  - "5"
 
 matrix:
   allow_failures:
@@ -24,3 +25,8 @@ addons:
       - g++-4.8
 env:
   - CXX=g++-4.8
+sudo: false
+
+before_install:
+  # Upgrade `npm` to avoid semver issues
+  - npm -g install npm@3.5.2

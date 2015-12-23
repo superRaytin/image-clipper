@@ -1,0 +1,55 @@
+{
+  "rules": {
+    "brace-style": [0, "1tbs"],
+    "curly": [2, "all"],
+    "comma-spacing": 2,
+    "eqeqeq": 2,
+    "newline-after-var": 0,
+    "no-alert": 2,
+    "no-console": 0,
+    "no-debugger": 2,
+    "no-empty": 2,
+    "no-eval": 2,
+    "no-extra-parens": 2,
+    "no-unreachable": 2,
+    "no-unused-expressions": 0,
+    "no-unused-vars": 2,
+    "no-spaced-func": 2,
+    "no-multi-spaces": 2,
+    "no-multi-str": 2,
+    "no-multiple-empty-lines": [2, {"max": 2}],
+    "no-with": 2,
+    "no-lone-blocks": 2,
+    "no-invalid-regexp": 2,
+    "no-warning-comments": [0, {
+      "terms": ["todo", "fixme", "xxx"],
+      "location": "start"
+    }],
+    "no-trailing-spaces": 2,
+    "no-new-func": 2,
+    "no-new-object": 2,
+    "no-irregular-whitespace": 2,
+    "quotes": [2, "single"],
+    "strict": [2, "global"],
+    "space-before-blocks": 2,
+    "space-after-keywords": 2,
+    "spaced-comment": 2,
+    "space-infix-ops": 2,
+    "space-return-throw-case": 2,
+    "space-unary-ops": [2, {
+      "words": true,
+      "nonwords": false
+    }],
+    "space-before-function-paren": [1, "never"]
+  },
+  "env": {
+    "amd": true,
+    "jasmine": false,
+    "node": true,
+    "mocha": true,
+    "browser": true,
+    "builtin": true,
+    "es6": true
+  },
+  "extends": "eslint:recommended"
+}

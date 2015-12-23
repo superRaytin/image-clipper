@@ -26,3 +26,7 @@ addons:
 env:
   - CXX=g++-4.8
 sudo: false
+
+before_install:
+  # Upgrade `npm` to avoid semver issues
+  - npm install -g npm@2.3.0

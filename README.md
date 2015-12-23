@@ -414,6 +414,13 @@ $ cd image-clipper && npm install
 
 Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon releases. Patches for features, bug fixes, documentation, examples and others are certainly welcome.
 
+# Where is this library used?
+
+If you are using this library in one of your projects, add it in this list :)
+
+- [https://github.com/superRaytin/puzzler](Puzzler)
+- [https://github.com/superRaytin/image-to-slices](image-to-slices)
+
 # Testing
 
 ### Node.js (with node-canvas)

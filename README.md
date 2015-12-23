@@ -408,6 +408,13 @@ Your desktop application will remain more stable and lightweight and your user w
 
 **Happy Clipping!**
 
+# Where is this library used?
+
+If you are using this library in one of your projects, add it in this list :)
+
+- [Puzzler](https://github.com/superRaytin/puzzler)
+- [image-to-slices](https://github.com/superRaytin/image-to-slices)
+
 # Contributing
 
 ```
@@ -416,13 +423,6 @@ $ cd image-clipper && npm install
 ```
 
 Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon releases. Patches for features, bug fixes, documentation, examples and others are certainly welcome.
-
-# Where is this library used?
-
-If you are using this library in one of your projects, add it in this list :)
-
-- [Puzzler](https://github.com/superRaytin/puzzler)
-- [image-to-slices](https://github.com/superRaytin/image-to-slices)
 
 # Testing
 

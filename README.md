@@ -406,14 +406,14 @@ Electron & NW.js provide a mixture of Node.js and Browser, image-clipper just ri
 
 Your desktop application will remain more stable and lightweight and your user will be peace of mind.
 
-**Happy Clipping!**
-
-# Where is this library used?
+## Where is this library used?
 
 If you are using this library in one of your projects, add it in this list :)
 
 - [Puzzler](https://github.com/superRaytin/puzzler)
 - [image-to-slices](https://github.com/superRaytin/image-to-slices)
+
+**Happy Clipping!**
 
 # Contributing
 

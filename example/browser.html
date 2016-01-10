@@ -34,9 +34,8 @@
     <div class="col">
         <h3>Code</h3>
         <pre>
-var clipper = new ImageClipper();
-clipper.loadImageFromUrl('house.jpg', function() {
-    this.quality(10).crop(20, 20, 100, 100).toDataURL(function(dataUrl) {
+imageClipper('house.jpg', function() {
+    this.quality(10).crop(x, y, width, height).toDataURL(function(dataUrl) {
         previewImage.src = dataUrl;
     });
 });
@@ -46,7 +45,7 @@ clipper.loadImageFromUrl('house.jpg', function() {
     </div>
 </div>
 
-<script src="../dist/imageClipper.js"></script>
+<script src="../dist/image-clipper.js"></script>
 <script>
     var source = document.getElementById('source');
     var previewImage = document.getElementById('preview');
@@ -56,8 +55,7 @@ clipper.loadImageFromUrl('house.jpg', function() {
     var width = 100;
     var height = 100;
 
-    var clipper = new ImageClipper();
-    clipper.loadImageFromUrl('house.jpg', function() {
+    imageClipper('house.jpg', function() {
         this.quality(10).crop(x, y, width, height).toDataURL(function(dataUrl) {
             previewImage.src = dataUrl;
         });

@@ -1,10 +1,10 @@
 # image-clipper
 > Node.js module for clipping & cropping JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & [Electron](https://github.com/atom/electron/) & [NW.js](https://github.com/nwjs/nw.js) (Node-webkit), itself doesn't relies on any image processing libraries.
 
-[![Build Status](https://travis-ci.org/superRaytin/image-clipper.svg?branch=master)](https://travis-ci.org/superRaytin/image-clipper)
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][npm-url]
 [![Bower version][bower-image]][bower-url]
+[![Build Status](https://travis-ci.org/superRaytin/image-clipper.svg?branch=master)](https://travis-ci.org/superRaytin/image-clipper)
 
 [![image-clipper](https://nodei.co/npm/image-clipper.png)](https://npmjs.org/package/image-clipper)
 

@@ -1,10 +1,813 @@
 /*
  * image-clipper 0.4.2
- * Node.js module for clip & crop JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & Electron & NW.js (Node-webkit), itself doesn't relies on any image processing libraries.
+ * Node.js module for clipping & cropping JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & Electron & NW.js (Node-webkit), itself doesn't relies on any image processing libraries.
  * https://github.com/superRaytin/image-clipper
  *
  * Copyright 2015, Leon Shi
  * Released under the MIT license.
 */
 
-!function t(e,n,i){function r(a,s){if(!n[a]){if(!e[a]){var u="function"==typeof require&&require;if(!s&&u)return u(a,!0);if(o)return o(a,!0);throw new Error("Cannot find module '"+a+"'")}var f=n[a]={exports:{}};e[a][0].call(f.exports,function(t){var n=e[a][1][t];return r(n?n:t)},f,f.exports,t,e,n,i)}return n[a].exports}for(var o="function"==typeof require&&require,a=0;a<i.length;a++)r(i[a]);return r}({1:[function(t,e,n){(function(n){"use strict";function i(t){return t=t||{},this.options={},r.extend(this.options,this.defaults,t),this.quality(this.options.quality),this}var r=t("./utils"),o=t("./polyfills"),a=r.isElectron(),s=r.isNW(),u=r.isBrowser(),f=u||a||s;i.prototype.defaults={canvas:null,quality:92,maxQuality:100,minQuality:1,bufsize:4096},i.prototype.loadImageFromMemory=function(t){var e=this.options;t=t||this.originalImage;var n=t.width,i=t.height,o=this.__createCanvas(n,i),a=o.getContext("2d");return a.drawImage(t,0,0,n,i),this.canvas=o,e.imageFormat=e.imageFormat||r.getImageFormat(t.src),this.originalImage||(this.originalImage=t),this},i.prototype.loadImageFromUrl=function(t,e){var n=this,i=this.options,o=this.__createImage();i.imageFormat=i.imageFormat||r.getImageFormat(t),o.onload=function(){n.loadImageFromMemory(o),e.call(n)},o.src=t},i.prototype.image=function(t,e){var n=this.options,i=r.type(t);if("String"!==i&&"Image"!==i&&"HTMLImageElement"!==i)throw new Error("invalid arguments");if("String"===i){if(!e)throw new Error("callback must be specified when load from path");n.imageFormat=n.imageFormat||r.getImageFormat(t),this.loadImageFromUrl(t,function(){e.call(this)})}else if("Image"===i||"HTMLImageElement"===i)return n.imageFormat=n.imageFormat||r.getImageFormat(t.src),this.loadImageFromMemory(t),e&&"Function"===r.type(e)&&(e.call(this),console.warn("No need to specify callback when load from memory, please use chain-capable method directly like this: clipper(Image).crop(...).resize(...)")),this},i.prototype.crop=function(t,e,n,i){var r=this.canvas,o=r.getContext("2d"),a=o.getImageData(t,e,n,i),s=this.__createCanvas(n,i),u=s.getContext("2d");return u.rect(0,0,n,i),u.fillStyle="white",u.fill(),u.putImageData(a,0,0),this.canvas=s,this},i.prototype.toFile=function(t,e){var n=this,i=this.options,r=i.imageFormat;return this.toDataURL(function(i){u?e.call(n,i):this.dataUrlToFile(t,i,r,function(){e.call(n)})}),this},i.prototype.dataUrlToFile=function(t,e,i,r){var a=this,s=e.replace("data:"+i+";base64,",""),u=new n(s,"base64");o.writeFile(t,u,function(){r.call(a)})},i.prototype.resize=function(t,e){var n,i,r=this.canvas;if(!arguments.length)throw new Error("resize() must be specified at least one parameter");if(1===arguments.length){if(!t)throw new Error("resize() inappropriate parameter");n=t/r.width,e=r.height*n}else!t&&e&&(i=e/r.height,t=r.width*i);var o=this.__createCanvas(t,e),a=o.getContext("2d");return a.drawImage(r,0,0,t,e),this.canvas=o,this},i.prototype.clear=function(t,e,n,i){var r=this.canvas,o=r.getContext("2d");return o.clearRect(t,e,n,i),o.fillStyle="#fff",o.fillRect(t,e,n,i),this},i.prototype.quality=function(t){if("Number"!==r.type(t)&&"String"!==r.type(t))throw new Error("Invalid arguments");if(!t)return this;var e=this.options;return t=parseFloat(t),t=r.rangeNumber(t,e.minQuality,e.maxQuality),e.quality=t,this},i.prototype.toDataURL=function(t,e){var n=this,i=this.options,a=i.quality,s=i.minQuality,u=i.maxQuality,c=i.imageFormat,l=i.bufsize;"string"==typeof t&&(t=parseFloat(t)),0===arguments.length?t=a:1===arguments.length?"number"==typeof t?t=r.rangeNumber(t,s,u):"function"==typeof t&&(e=t,t=a):2===arguments.length&&(t=r.rangeNumber(t,s,u));var p=this.canvas;if(f){var m=p.toDataURL(c,t/100);return e&&e.call(this,m),m}if(!e)throw new Error("toDataURL(): callback must be specified");return o.toDataURL({canvas:p,imageFormat:c,quality:t,bufsize:l},function(t){e.call(n,t)}),this},i.prototype.configure=function(t,e){var n=this.options;return r.setter(n,t,e),n.quality&&this.quality(n.quality),this},i.prototype.getCanvas=function(){return this.canvas},i.prototype.destroy=function(){return this.canvas=null,this},i.prototype.reset=function(){return this.destroy().loadImageFromMemory()},i.prototype.injectNodeCanvas=function(t){"undefined"!=typeof t&&(this.options.canvas=t)},i.prototype.__createCanvas=function(t,e){var n,i;if(f){var r=window.document;i=r.createElement("canvas"),i.width=t,i.height=e}else{if(n=this.options.canvas,!n||!n.Image)throw new Error("Require node-canvas on the server-side Node.js");i=new n(t,e)}return i},i.prototype.__createImage=function(){var t,e,n;if(f)t=window.Image;else{if(n=this.options.canvas,!n||!n.Image)throw new Error("Require node-canvas on the server-side Node.js");t=n.Image}return e=new t},i.__configure=function(t,e){var n=i.prototype.defaults;r.setter(n,t,e),n.quality&&(n.quality=r.rangeNumber(n.quality,n.minQuality,n.maxQuality))},e.exports=i}).call(this,t("buffer").Buffer)},{"./polyfills":3,"./utils":4,buffer:5}],2:[function(t,e,n){"use strict";function i(t,e,n){var i;switch(arguments.length){case 0:i=new r;break;case 1:"Object"===o.type(t)?i=new r(t):(i=new r,i.image(t));break;case 2:n=e,e=null,i=new r,i.image(t,function(){n.call(this)});break;default:if("Object"!==o.type(e))throw new Error("invalid arguments");i=new r(e),i.image(t,function(){n.call(this)})}return i}var r=t("./clipper"),o=t("./utils");i.configure=function(t,e){r.__configure(t,e)},n=e.exports=i,n.imageClipper=i,"function"==typeof define&&define.amd?define(function(){return i}):("undefined"!=typeof window||"undefined"!=typeof navigator)&&(window.imageClipper=i)},{"./clipper":1,"./utils":4}],3:[function(t,e,n){"use strict";var i=t("fs"),r={};r.writeFile=function(t,e,n){i.writeFile(t,e,function(t){if(t)throw t;n()})},r.toDataURL=function(t,e){var n=t.canvas,i=t.imageFormat,r=t.quality,o=t.bufsize;"image/jpeg"===i?n.toDataURL(i,{quality:r,bufsize:o},function(t,n){if(t)throw t;e(n)}):n.toDataURL(i,function(t,n){if(t)throw t;e(n)})},e.exports=r},{fs:5}],4:[function(t,e,n){(function(t,n){"use strict";var i={};i.isBrowser=function(){var t=i.isElectron(),e=i.isNW();return!t&&!e&&!("undefined"==typeof window||"undefined"==typeof navigator)},i.isNode=function(){return!("undefined"==typeof t||!t.platform||!t.versions)},i.isNW=function(){var e=i.isNode();return e&&!("undefined"==typeof n||!t.__node_webkit||!t.versions["node-webkit"])},i.isElectron=function(){var e=i.isNode();return e&&!("undefined"==typeof n||!t.versions.electron)},i.type=function(t){return Object.prototype.toString.call(t).split(" ")[1].replace("]","")},i.rangeNumber=function(t,e,n){return t>n?n:e>t?e:t},i.each=function(t,e){var n=t.length;if(n)for(var i=0;n>i&&e.call(t[i],t[i],i)!==!1;i++);else if("undefined"==typeof n)for(var r in t)if(e.call(t[r],t[r],r)===!1)break},i.extend=function(t){i.each(arguments,function(e,n){n>0&&i.each(e,function(e,n){"undefined"!=typeof e&&(t[n]=e)})})},i.setter=function(t,e,n){var r=i.type(e);if("String"===r){if("undefined"==typeof t[e])throw new Error("Invalid configuration name.");if("undefined"==typeof n)throw new Error("Lack of a value corresponding to the name");"Object"===i.type(n)&&"Object"===i.type(t[e])?i.extend(t[e],n):t[e]=n}else{if("Object"!==r)throw new Error("Invalid arguments");n=e,i.extend(t,n)}},i.getImageFormat=function(t){var e=t.substr(t.lastIndexOf(".")+1,t.length);return e="jpg"===e?"jpeg":e,"image/"+e},i.upperCaseFirstLetter=function(t){return t.replace(t.charAt(0),function(t){return t.toUpperCase()})},e.exports=i}).call(this,t("pBGvAp"),"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{pBGvAp:6}],5:[function(t,e,n){},{}],6:[function(t,e,n){function i(){}var r=e.exports={};r.nextTick=function(){var t="undefined"!=typeof window&&window.setImmediate,e="undefined"!=typeof window&&window.postMessage&&window.addEventListener;if(t)return function(t){return window.setImmediate(t)};if(e){var n=[];return window.addEventListener("message",function(t){var e=t.source;if((e===window||null===e)&&"process-tick"===t.data&&(t.stopPropagation(),n.length>0)){var i=n.shift();i()}},!0),function(t){n.push(t),window.postMessage("process-tick","*")}}return function(t){setTimeout(t,0)}}(),r.title="browser",r.browser=!0,r.env={},r.argv=[],r.on=i,r.addListener=i,r.once=i,r.off=i,r.removeListener=i,r.removeAllListeners=i,r.emit=i,r.binding=function(t){throw new Error("process.binding is not supported")},r.cwd=function(){return"/"},r.chdir=function(t){throw new Error("process.chdir is not supported")}},{}]},{},[2]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (Buffer){
+'use strict';
+
+var utils = require('./utils');
+var polyfills = require('./polyfills');
+
+// whether is Electron
+var isElectron = utils.isElectron();
+
+// whether is NW.js (Node-webkit)
+var isNW = utils.isNW();
+
+// whether is Browser
+var isBrowser = utils.isBrowser();
+
+// whether support canvas
+var isSupportCanvas = isBrowser || isElectron || isNW;
+
+// constructor
+function ImageClipper(options) {
+  options = options || {};
+
+  // instance properties
+  this.options = {};
+
+  // extend instance properties with global defaults and initial properties
+  utils.extend(this.options, this.defaults, options);
+
+  // the quality number requires special handling,
+  // to ensure that the number will always be between 'min' and 'max'
+  this.quality(this.options.quality);
+
+  return this;
+}
+
+ImageClipper.prototype.defaults = {
+  canvas: null,
+  // compression level, default: 92
+  quality: 92,
+  maxQuality: 100,
+  minQuality: 1,
+  // output buffer size in bytes for JPEG while using node-canvas
+  bufsize: 4096
+}
+
+/**
+ * load image from the memory.
+ *
+ * @param {Object} source, anything ctx.drawImage() accepts, usually HTMLImageElement
+ * @return ImageClipper instance
+ * */
+ImageClipper.prototype.loadImageFromMemory = function(source) {
+  var options = this.options;
+
+  source = source || this.originalImage;
+
+  var width = source.width;
+  var height = source.height;
+
+  var canvas = this.__createCanvas(width, height);
+  var ctx = canvas.getContext('2d');
+
+  ctx.drawImage(source, 0, 0, width, height);
+
+  this.canvas = canvas;
+  options.imageFormat = options.imageFormat || utils.getImageFormat(source.src);
+
+  if (!this.originalImage) {
+    this.originalImage = source;
+  }
+
+  return this;
+}
+
+/**
+ * Load image from the given path.
+ *
+ * @param {String} path, the path where the source image
+ * @param {Function} callback, to be executed when loading is complete
+ * */
+ImageClipper.prototype.loadImageFromUrl = function(path, callback) {
+  var self = this;
+  var options = this.options;
+  var image = this.__createImage();
+
+  options.imageFormat = options.imageFormat || utils.getImageFormat(path);
+
+  image.onload = function() {
+    self.loadImageFromMemory(image);
+    callback.call(self);
+  };
+
+  image.src = path;
+}
+
+/**
+ * Load image through loadImageFromUrl or loadImageFromMemory.
+ *
+ * @param {String | Image} source, the path where the source image
+ * @param {Function} callback, to be executed when loading is complete
+ * */
+ImageClipper.prototype.image = function(source, callback) {
+  var options = this.options;
+
+  var sourceType = utils.type(source);
+
+  if (sourceType !== 'String' &&
+      sourceType !== 'Image' &&
+      sourceType !== 'HTMLImageElement') {
+    throw new Error('invalid arguments');
+  }
+
+  // imageClipper('path/to/image.jpg')
+  if (sourceType === 'String') {
+    if (!callback) {
+      throw new Error('callback must be specified when load from path');
+    }
+
+    options.imageFormat = options.imageFormat || utils.getImageFormat(source);
+
+    this.loadImageFromUrl(source, function() {
+      callback.call(this);
+    });
+  }
+  // imageClipper(Canvas.Image) or imageClipper(new Image),
+  // Object.prototype.toString.call(Canvas.Image) on the server-side Node.js will return '[Object Image]',
+  // Object.prototype.toString.call(new Image) in Browser will return '[Object HTMLImageElement]'
+  else if (sourceType === 'Image' || sourceType === 'HTMLImageElement') {
+    options.imageFormat = options.imageFormat || utils.getImageFormat(source.src);
+
+    this.loadImageFromMemory(source);
+
+    if (callback && utils.type(callback) === 'Function') {
+      callback.call(this);
+      console.warn('No need to specify callback when load from memory, please use chain-capable method directly like this: clipper(Image).crop(...).resize(...)');
+    }
+
+    return this;
+  }
+}
+
+/**
+ * Crops the resultant image to the given width and height at the given x and y position.
+ *
+ * @param {Number} x, The x axis of the coordinate for the rectangle starting point
+ * @param {Number} y, The y axis of the coordinate for the rectangle starting point
+ * @param {Number} width, The rectangle's width
+ * @param {Number} height, The rectangle's height
+ * @return ImageClipper instance
+ * */
+ImageClipper.prototype.crop = function(x, y, width, height) {
+  var canvas = this.canvas;
+  var ctx = canvas.getContext('2d');
+
+  // Get cropped pixel data
+  var imageData = ctx.getImageData(x, y, width, height);
+
+  // Create a temporary canvas to place cropped pixel data
+  var tempcanvas = this.__createCanvas(width, height);
+  var tempctx = tempcanvas.getContext('2d');
+
+  tempctx.rect(0, 0, width, height);
+  tempctx.fillStyle = 'white';
+  tempctx.fill();
+  tempctx.putImageData(imageData, 0, 0);
+
+  // change context canvas
+  this.canvas = tempcanvas;
+
+  return this;
+}
+
+/**
+ * Write the resultant image to file.
+ *
+ * Note: in the Browser (not contain Electron & NW.js),
+ * this method is equivalent to toDataURL, callback will still be executed.
+ *
+ * @param {String} the path where the resultant image will be saved
+ * @param {Function} a function to be executed when saving is complete
+ * */
+ImageClipper.prototype.toFile = function(path, callback) {
+  var self = this;
+  var options = this.options;
+  var imageFormat = options.imageFormat;
+
+  this.toDataURL(function(dataUrl) {
+    // return data URI while using in browser
+    if (isBrowser) {
+      callback.call(self, dataUrl);
+    }
+    // Electron & NW.js & server-side Node.js
+    else {
+      this.dataUrlToFile(path, dataUrl, imageFormat, function() {
+        callback.call(self, dataUrl);
+      });
+    }
+  });
+
+  return this;
+}
+
+ImageClipper.prototype.dataUrlToFile = function(path, dataUrl, imageFormat, callback) {
+  var self = this;
+  var base64 = dataUrl.replace('data:' + imageFormat + ';base64,', '');
+
+  var dataBuffer = new Buffer(base64, 'base64');
+
+  // create image binary file
+  polyfills.writeFile(path, dataBuffer, function() {
+    callback.call(self);
+  });
+}
+
+/**
+ * Resize the resultant image to the given width and height
+ *
+ * @param {Number} width, Number of pixels wide
+ * @param {Number} height, Number of pixels high
+ * @return ImageClipper instance
+ * */
+ImageClipper.prototype.resize = function(width, height) {
+  var originalCanvas = this.canvas;
+  var scaleX, scaleY;
+
+  if (!arguments.length) {
+    throw new Error('resize() must be specified at least one parameter');
+  }
+
+  // proportional scale when resize(width)
+  if (arguments.length === 1) {
+    // resize(null)
+    if (!width) {
+      throw new Error('resize() inappropriate parameter');
+    }
+
+    scaleX = width / originalCanvas.width;
+    height = originalCanvas.height * scaleX;
+  } else {
+    // proportional scale when resize(null, height)
+    if (!width && height) {
+      scaleY = height / originalCanvas.height;
+      width = originalCanvas.width * scaleY;
+    }
+  }
+
+  var canvas = this.__createCanvas(width, height);
+  var ctx = canvas.getContext('2d');
+
+  ctx.drawImage(originalCanvas, 0, 0, width, height);
+
+  // change context canvas
+  this.canvas = canvas;
+
+  return this;
+}
+
+/**
+ * Removes rectangular pixels from the given width and height at the given x and y position.
+ *
+ * @param {Number} x, The x axis of the coordinate for the rectangle starting point
+ * @param {Number} y, The y axis of the coordinate for the rectangle starting point
+ * @param {Number} width, Number of pixels wide will be removed
+ * @param {Number} height, Number of pixels high will be removed
+ * @return ImageClipper instance
+ * */
+ImageClipper.prototype.clear = function(x, y, width, height) {
+  var canvas = this.canvas;
+  // get target canvas's context
+  var ctx = canvas.getContext('2d');
+
+  // clear rect pixel
+  ctx.clearRect(x, y, width, height);
+
+  // fill the cleared area with a white background
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x, y, width, height);
+
+  return this;
+}
+
+/**
+ * Adjusts the jpeg and webp compression level.
+ *
+ * @param {Number | String} level, a Number between 1 and 100 indicating image quality
+ * @return ImageClipper instance
+ * */
+ImageClipper.prototype.quality = function(level) {
+  if (utils.type(level) !== 'Number' && utils.type(level) !== 'String') {
+    throw new Error('Invalid arguments');
+  }
+
+  if (!level) {
+    return this;
+  }
+
+  var options = this.options;
+
+  level = parseFloat(level);
+
+  // this will always be between 'min' and 'max'
+  level = utils.rangeNumber(level, options.minQuality, options.maxQuality);
+
+  options.quality = level;
+
+  return this;
+}
+
+/**
+ * Return a string containing the data URI of current resultant canvas.
+ *
+ * @param {Number} quality
+ * @param {Function} callback, optional in the Browser & Electron & NW.js, neccessary on the server-side Node.js
+ * @return ImageClipper instance
+ * */
+ImageClipper.prototype.toDataURL = function(quality, callback) {
+  var self = this;
+  var options = this.options;
+  var qualityLevel = options.quality;
+  var minQuality = options.minQuality;
+  var maxQuality = options.maxQuality;
+  var imageFormat = options.imageFormat;
+  var bufsize = options.bufsize;
+
+  // toDataURL('68', function() {...})
+  if (typeof quality === 'string') {
+    quality = parseFloat(quality);
+  }
+
+  // toDataURL()
+  if (arguments.length === 0) {
+    quality = qualityLevel;
+  }
+  else if (arguments.length === 1) {
+    // toDataURL(quality)
+    if (typeof quality === 'number') {
+      quality = utils.rangeNumber(quality, minQuality, maxQuality);
+    }
+    // toDataURL(callback)
+    else if (typeof quality === 'function') {
+      callback = quality;
+      quality = qualityLevel;
+    }
+  }
+  // toDataURL(quality, callback)
+  else if (arguments.length === 2) {
+    quality = utils.rangeNumber(quality, minQuality, maxQuality);
+  }
+
+  var canvas = this.canvas;
+
+  // Browsers & Electron & NW.js
+  if (isSupportCanvas) {
+    var dataUrl = canvas.toDataURL(imageFormat, quality / 100);
+    callback && callback.call(this, dataUrl);
+    return dataUrl;
+  }
+  // server-side Node.js
+  else {
+    if (!callback) {
+      throw new Error('toDataURL(): callback must be specified');
+    }
+
+    polyfills.toDataURL({
+      canvas: canvas,
+      imageFormat: imageFormat,
+      quality: quality,
+      bufsize: bufsize
+    }, function(dataUrl) {
+      callback.call(self, dataUrl);
+    });
+  }
+
+  return this;
+}
+
+/**
+ * configure instance properties
+ * this will override the global settings
+ *
+ * support both configure(name, value) and configure({name: value})
+ * @param {String | Object} name, property name or properties list
+ * @param {String | Undefined} value, property value or nothing
+ * */
+ImageClipper.prototype.configure = function(name, value) {
+  var options = this.options;
+
+  utils.setter(options, name, value);
+
+  // the quality number requires special handling,
+  // to ensure that the number will always be between 'min' and 'max'
+  if (options.quality) {
+    this.quality(options.quality);
+  }
+
+  return this;
+}
+
+// get canvas
+ImageClipper.prototype.getCanvas = function() {
+  return this.canvas;
+}
+
+// destroy canvas
+ImageClipper.prototype.destroy = function() {
+  this.canvas = null;
+  return this;
+}
+
+// reset canvas
+ImageClipper.prototype.reset = function() {
+  return this.destroy().loadImageFromMemory();
+}
+
+// inject canvas implementation library
+// tiis will override the global settings
+ImageClipper.prototype.injectNodeCanvas = function(canvas) {
+  if (typeof canvas !== 'undefined') {
+    this.options.canvas = canvas;
+  }
+}
+
+// create Canvas object
+ImageClipper.prototype.__createCanvas = function(width, height) {
+  var canvas, c;
+
+  if (isSupportCanvas) {
+    var document = window.document;
+    c = document.createElement('canvas');
+    c.width = width;
+    c.height = height;
+  } else {
+    // Node.js
+    canvas = this.options.canvas;
+    if (canvas && canvas.Image) {
+      c = new canvas(width, height);
+    } else {
+      throw new Error('Require node-canvas on the server-side Node.js');
+    }
+  }
+
+  return c;
+}
+
+// create Image object
+ImageClipper.prototype.__createImage = function() {
+  var Image, img, canvas;
+
+  if (isSupportCanvas) {
+    Image = window.Image;
+  } else {
+    // Node.js
+    canvas = this.options.canvas;
+    if (canvas && canvas.Image) {
+      Image = canvas.Image;
+    } else {
+      throw new Error('Require node-canvas on the server-side Node.js');
+    }
+  }
+
+  img = new Image;
+
+  return img;
+}
+
+/**
+ * configure global default properties
+ * properties changed in this object (same properties configurable through the constructor)
+ * will take effect for every instance created after the change
+ *
+ * support both configure(name, value) and configure({name: value})
+ * @param {String | Object} name, property name or properties list
+ * @param {String | Undefined} value, property value or nothing
+ * */
+ImageClipper.__configure = function(name, value) {
+  var defaults = ImageClipper.prototype.defaults;
+
+  utils.setter(defaults, name, value);
+
+  // the quality number requires special handling,
+  // to ensure that the number will always be between 'min' and 'max'
+  if (defaults.quality) {
+    defaults.quality = utils.rangeNumber(defaults.quality, defaults.minQuality, defaults.maxQuality);
+  }
+}
+
+module.exports = ImageClipper;
+}).call(this,require("buffer").Buffer)
+},{"./polyfills":3,"./utils":4,"buffer":5}],2:[function(require,module,exports){
+'use strict';
+
+var Clipper = require('./clipper');
+var utils = require('./utils');
+
+// Clipper factory
+function imageClipper(source, options, callback) {
+  var clipper;
+
+  switch (arguments.length) {
+    // imageClipper()
+    case 0:
+      clipper = new Clipper();
+      break;
+
+    // imageClipper(Image) || imageClipper({...})
+    case 1:
+      // imageClipper({...})
+      if (utils.type(source) === 'Object') {
+        clipper = new Clipper(source);
+      }
+      else {
+        clipper = new Clipper();
+        clipper.image(source);
+      }
+
+      break;
+
+    // imageClipper('path/to/image.jpg', callback)
+    case 2:
+      callback = options;
+      options = null;
+
+      clipper = new Clipper();
+
+      clipper.image(source, function() {
+        callback.call(this);
+      });
+      break;
+
+    // imageClipper('path/to/image.jpg', {...}, callback)
+    default:
+      if (utils.type(options) !== 'Object') {
+        throw new Error('invalid arguments');
+      }
+
+      clipper = new Clipper(options);
+
+      clipper.image(source, function() {
+        callback.call(this);
+      });
+  }
+
+  return clipper;
+}
+
+// Configure default properties
+imageClipper.configure = function(name, value) {
+  Clipper.__configure(name, value);
+}
+
+// Export the imageClipper object for Node.js, with
+// backwards-compatibility for their old module API.
+exports = module.exports = imageClipper;
+exports.imageClipper = imageClipper;
+
+// If we're in the browser,
+// define it if we're using AMD, otherwise leak a global.
+if (typeof define === 'function' && define.amd) {
+  define(function() {
+    return imageClipper;
+  });
+} else if (typeof window !== 'undefined' || typeof navigator !== 'undefined') {
+  window.imageClipper = imageClipper;
+}
+},{"./clipper":1,"./utils":4}],3:[function(require,module,exports){
+'use strict';
+
+var fs = require('fs');
+var polyfills = {};
+
+// write an image to file
+polyfills.writeFile = function(path, dataBuffer, callback) {
+  fs.writeFile(path, dataBuffer, function(err) {
+    if (err) {
+      throw err;
+    }
+
+    callback();
+  });
+};
+
+// return a string containing the data URI of current resultant canvas.
+polyfills.toDataURL = function(options, callback) {
+  var canvas = options.canvas;
+  var imageFormat = options.imageFormat;
+  var quality = options.quality;
+  var bufsize = options.bufsize;
+
+  if (imageFormat === 'image/jpeg') {
+    // JPEG quality number support 1 ~ 100
+    canvas.toDataURL(imageFormat, {quality: quality, bufsize: bufsize}, function(err, str) {
+      if (err) {
+        throw err;
+      }
+
+      callback(str);
+    });
+
+  } else {
+    // PNG doesn't support quality setting
+    canvas.toDataURL(imageFormat, function(err, str) {
+      if (err) {
+        throw err;
+      }
+
+      callback(str);
+    });
+  }
+};
+
+module.exports = polyfills;
+
+},{"fs":5}],4:[function(require,module,exports){
+(function (process,global){
+'use strict';
+
+var utils = {};
+
+// whether is browser
+utils.isBrowser = function() {
+  var isElectron = utils.isElectron();
+  var isNW = utils.isNW();
+  return !isElectron && !isNW && !(typeof window === 'undefined' || typeof navigator === 'undefined');
+};
+
+// whether is Node
+utils.isNode = function() {
+  return !(typeof process === 'undefined' || !process.platform || !process.versions);
+};
+
+// whether is NW.js (Node-webkit)
+utils.isNW = function() {
+  var isNode = utils.isNode();
+  return isNode && !(typeof global === 'undefined' || !process.__node_webkit || !process.versions['node-webkit']);
+};
+
+// whether is Electron
+utils.isElectron = function() {
+  var isNode = utils.isNode();
+  return isNode && !(typeof global === 'undefined' || !process.versions.electron);
+};
+
+// detect object type
+utils.type = function(obj) {
+  return Object.prototype.toString.call(obj).split(' ')[1].replace(']', '');
+};
+
+// return a number between 'min' and 'max'
+utils.rangeNumber = function(num, min, max) {
+  return num > max ? max : num < min ? min : num;
+};
+
+utils.each = function(stack, handler) {
+  var len = stack.length;
+
+  // Array
+  if (len) {
+    for (var i = 0; i < len; i++) {
+      if (handler.call(stack[i], stack[i], i) === false) {
+        break;
+      }
+    }
+  }
+  // Object
+  else if (typeof len === 'undefined') {
+    for (var name in stack) {
+      if (handler.call(stack[name], stack[name], name) === false) {
+        break;
+      }
+    }
+  }
+};
+
+// shallow copy
+// utils.extend(target, obj1, obj2, ...)
+utils.extend = function(target) {
+  utils.each(arguments, function(source, index) {
+    if (index > 0) {
+      utils.each(source, function(value, key) {
+        if (typeof value !== 'undefined') {
+          target[key] = value;
+        }
+      });
+    }
+  });
+};
+
+// setter
+utils.setter = function(target, name, value) {
+  var nameType = utils.type(name);
+
+  // setter(name, value)
+  if (nameType === 'String') {
+    if (typeof target[name] === 'undefined') {
+      throw new Error('Invalid configuration name.');
+    }
+
+    if (typeof value === 'undefined') {
+      throw new Error('Lack of a value corresponding to the name');
+    }
+
+    if (utils.type(value) === 'Object' && utils.type(target[name]) === 'Object') {
+      utils.extend(target[name], value);
+    } else {
+      target[name] = value;
+    }
+  }
+  // setter({...})
+  else if (nameType === 'Object') {
+    value = name;
+    utils.extend(target, value);
+  }
+  // otherwise throws
+  else {
+    throw new Error('Invalid arguments');
+  }
+};
+
+// get image format
+utils.getImageFormat = function(str) {
+  var format = str.substr(str.lastIndexOf('.') + 1, str.length);
+  format = format === 'jpg' ? 'jpeg' : format;
+  return 'image/' + format;
+};
+
+// uppercase first letter
+utils.upperCaseFirstLetter = function(str) {
+  return str.replace(str.charAt(0), function(a) {
+    return a.toUpperCase();
+  });
+};
+
+module.exports = utils;
+
+}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"pBGvAp":6}],5:[function(require,module,exports){
+
+},{}],6:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            var source = ev.source;
+            if ((source === window || source === null) && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}]},{},[2])

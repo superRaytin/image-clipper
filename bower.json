@@ -11,6 +11,6 @@
         "bower.json",
         "package.json",
         "README*.md",
-        "Gruntfile.js"
+        "gulpfile.js"
     ]
 }

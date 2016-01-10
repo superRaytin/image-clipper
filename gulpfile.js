@@ -23,6 +23,6 @@ gulp.task('build', function() {
         .pipe(banner(comment, {
             pkg: pkg
         }))
-        .pipe(rename('imageClipper.js'))
+        .pipe(rename('image-clipper.js'))
         .pipe(gulp.dest('dist'));
 });

@@ -1,5 +1,5 @@
 # image-clipper
-> Node.js module for clip & crop JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & [Electron](https://github.com/atom/electron/) & [NW.js](https://github.com/nwjs/nw.js) (Node-webkit), itself doesn't relies on any image processing libraries.
+> Node.js module for clipping & cropping JPEG, PNG, WebP images purely using the native Canvas APIs, excellent compatibility with the Browser & [Electron](https://github.com/atom/electron/) & [NW.js](https://github.com/nwjs/nw.js) (Node-webkit), itself doesn't relies on any image processing libraries.
 
 [![Build Status](https://travis-ci.org/superRaytin/image-clipper.svg?branch=master)](https://travis-ci.org/superRaytin/image-clipper)
 [![NPM version][npm-image]][npm-url]
@@ -16,7 +16,7 @@
 
 # Installation / Download
 
-`npm install image-clipper` or `bower install image-clipper` or just download [imageClipper.js](dist/imageClipper.js) from the git repo.
+`npm install image-clipper` or `bower install image-clipper` or just download [image-clipper.js](dist/image-clipper.js) from the git repo.
 
 # Quick Start
 
@@ -39,11 +39,13 @@ Clipper('/path/to/image.jpg', function() {
 
 [Benefits for Electron & NW.js application](#benefits-for-electron-nw)
 
-## Basic usage in the Browser
+## Client-side (browser)
+
+Simply download the latest minified version from the `dist/` folder. All APIs are available in a global object called `imageClipper`.
 
 ```html
-<img id="preview" alt="imageClipper preview">
-<script src="./dist/imageClipper.js"></script>
+<img id="preview" alt="image-clipper preview">
+<script src="./dist/image-clipper.js"></script>
 ```
 
 ```js

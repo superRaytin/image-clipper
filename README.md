@@ -426,6 +426,8 @@ $ cd image-clipper && npm install
 
 Please keep your local edits to `lib/*.js`, `dist/*.js` will be built upon releases. Patches for features, bug fixes, documentation, examples and others are certainly welcome.
 
+> I’m not a native English speaker, so feel free to point out grammatical and/or syntactical errors :)
+
 # Testing
 
 ### Node.js (with node-canvas)

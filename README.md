@@ -72,6 +72,24 @@ Listed below are commonly used APIs, you can see all of the possible usages of A
 
 Just start with `Clipper()`, chain-capable styles provided.
 
+## Contains
+
+- [Clipper(path [, options], callback)](#clipperpath--options-callback)
+- [Clipper(source [, options])](#clippersource--options)
+- [Clipper(options)](#clipperoptions)
+- [clipper.image(path, callback)](#clipperimagepath-callback)
+- [clipper.image(source)](#clipperimagesource)
+- [clipper.crop(x, y, width, height)](#clippercropx-y-width-height)
+- [clipper.toFile(path, callback)](#clippertofilepath-callback)
+- [clipper.toDataURL([quality, ]callback)](#clippertodataurlquality-callback)
+- [clipper.quality(quality)](#clipperqualityquality)
+- [clipper.resize(width [, height])](#clipperresizewidth--height)
+- [clipper.clear(x, y, width, height)](#clipperclearx-y-width-height)
+- [clipper.reset()](#clipperreset)
+- [clipper.injectNodeCanvas(Canvas)](#clipperinjectnodecanvascanvas)
+- [clipper.getCanvas()](#clippergetcanvas)
+- [clipper.configure(options)](#clipperconfigureoptions)
+
 ### Clipper(path [, options], callback)
 
 Load image from the given path with some optional parameters. This process will be performed asynchronously.
@@ -394,7 +412,7 @@ clipper.configure('bufsize', 2048);
 <a name="server-client-diff"></a>
 ## Differences between the server-side and the client-side on usage
 
-1. If you use `image-clipper` on the server-side Node.js, since it doesn't natively support Canvas, you should specify a Canvas implementation library like [node-canvas](https://github.com/Automattic/node-canvas). See [injectNodeCanvas() API](#inject-node-canvas) for detail.
+1. If you use `image-clipper` on the server-side Node.js, Canvas isn't being supported natively, you may specify a Canvas implementation library like [node-canvas](https://github.com/Automattic/node-canvas). See [injectNodeCanvas() API](#inject-node-canvas) for detail.
 2. The `toFile()` doesn't support to write the resultant image to file in the Browsers (not contain Electron & NW.js)
 
 <a name="benefits-for-electron-nw"></a>

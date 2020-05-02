@@ -14,6 +14,7 @@ var y = 20
 var width = 100
 var height = 100
 
+var noop = function () {}
 // return console.log(123, Canvas)
 
 Clipper.configure({
@@ -113,6 +114,42 @@ describe('entrance method clipper()', function() {
       Clipper(pngImagePath)
     } catch (e) {
       e.message.should.equal('callback must be specified when load from path')
+      done()
+    }
+  })
+
+  it('clipper("path/to/image.jpg", { ... }) throws since callback did not be provided', function(done) {
+    try {
+      Clipper(pngImagePath, { quality: 50 })
+    } catch (e) {
+      e.message.should.equal('Invalid argument: Second parameter should be a function')
+      done()
+    }
+  })
+
+  it('clipper("path/to/image.jpg", { ... }) throws since callback was not provided', function(done) {
+    try {
+      Clipper(pngImagePath, { quality: 50 })
+    } catch (e) {
+      e.message.should.equal('Invalid argument: Second parameter should be a function')
+      done()
+    }
+  })
+
+  it('clipper("path/to/image.jpg", { ... }, { ... }) throws since callback is not a function', function(done) {
+    try {
+      Clipper(pngImagePath, { quality: 50 }, {})
+    } catch (e) {
+      e.message.should.equal('Invalid argument: callback should be a function')
+      done()
+    }
+  })
+
+  it('clipper("path/to/image.jpg", function() { ... } , function() { ... }) throws since options is not an object', function(done) {
+    try {
+      Clipper(pngImagePath, noop, noop)
+    } catch (e) {
+      e.message.should.equal('Invalid argument: options should be an object')
       done()
     }
   })

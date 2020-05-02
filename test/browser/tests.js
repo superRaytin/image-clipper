@@ -10,6 +10,8 @@ var y = 20
 var width = 100
 var height = 100
 
+var noop = function () {}
+
 function createDOM(dataUrl) {
   var img = new Image()
   img.src = dataUrl
@@ -91,6 +93,33 @@ describe('entrance method clipper()', function() {
       done()
     }
   })
+
+  it('clipper("path/to/image.jpg", { ... }) throws since callback did not be provided', function(done) {
+    try {
+      Clipper(pngImagePath, { quality: 50 });
+    } catch (e) {
+      e.message.should.equal('Invalid argument: Second parameter should be a function');
+      done();
+    }
+  });
+
+  it('clipper("path/to/image.jpg", { ... }, { ... }) throws since callback did not be provided', function(done) {
+    try {
+      Clipper(pngImagePath, { quality: 50 }, {});
+    } catch (e) {
+      e.message.should.equal('Invalid argument: callback should be a function');
+      done();
+    }
+  });
+
+  it('clipper("path/to/image.jpg", function() { ... } , function() { ... }) throws since options is not an object', function(done) {
+    try {
+      Clipper(pngImagePath, noop, noop);
+    } catch (e) {
+      e.message.should.equal('Invalid argument: options should be an object');
+      done();
+    }
+  });
 
 })
 
